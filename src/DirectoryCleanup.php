@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\Skeleton;
+namespace Spatie\DirectoryCleanup;
 
-class SkeletonClass
+class DirectoryCleanup
 {
     /**
      * Create a new Skeleton Instance

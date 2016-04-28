@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Skeleton;
+namespace Spatie\DirectoryCleanup;
 
 use Illuminate\Support\Facades\Facade;
 

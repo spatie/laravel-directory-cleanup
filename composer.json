@@ -1,34 +1,37 @@
 {
-    "name": "spatie/:package_name",
-    "description": ":package_description",
+    "name": "spatie/laravel-directory-cleanup",
+    "description": "This package will remove the expired files from the given directories. ",
     "keywords": [
         "spatie",
-        ":package_name"
+        "laravel-directory-cleanup"
     ],
-    "homepage": "https://github.com/spatie/:package_name",
+    "homepage": "https://github.com/spatie/laravel-directory-cleanup",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
+            "name": "Jolita Grazyte",
+            "email": "jolita@spatie.be",
             "homepage": "https://spatie.be",
             "role": "Developer"
         }
     ],
     "require": {
-        "php" : "^7.0"
+        "php" : "^7.0",
+        "illuminate/support": "^5.1",
+        "nesbot/carbon": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.*"
+        "phpunit/phpunit": "5.*",
+        "orchestra/testbench":"^3.0"
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Skeleton\\": "src"
+            "Spatie\\DirectoryCleanup\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\Skeleton\\Test\\": "tests"
+            "Spatie\\DirectoryCleanup\\Test\\": "tests"
         }
     },
     "scripts": {
