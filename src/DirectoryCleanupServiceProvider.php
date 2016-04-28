@@ -22,5 +22,11 @@ class DirectoryCleanupServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/laravel-directory-cleanup.php', 'laravel-directory-cleanup');
+
+        $this->app->bind('command.clean:directories', DirectoryCleanupCommand::class);
+
+        $this->commands([
+            'command.clean:directories',
+        ]);
     }
 }
