@@ -25,6 +25,8 @@ class DirectoryCleanupTest extends TestCase
         $this->artisan('clean:directories');
 
         $this->assertFilesLeftInDirectoryAfterCleanup();
+
+        $this->assertFilesNotInDirectoryAfterCleanup();
     }
 
     protected function getTempDirectory()
@@ -34,9 +36,7 @@ class DirectoryCleanupTest extends TestCase
 
     protected function assertFilesInDirectoryBeforeCleanup()
     {
-        $files = collect(['file1.txt', 'file2.txt']);
-
-        $files->each(function ($file) {
+       collect(['file1.txt', 'file2.txt'])->each(function ($file) {
 
             $this->assertFileExists($this->getTempDirectory().'1/'.$file);
 
@@ -47,8 +47,15 @@ class DirectoryCleanupTest extends TestCase
 
     protected function assertFilesLeftInDirectoryAfterCleanup()
     {
-        $this->assertFileExists($this->getTempDirectory().'1/'.'file2.txt');
+        $this->assertFileExists($this->getTempDirectory().'1/file2.txt');
 
-        $this->assertFileExists($this->getTempDirectory().'2/'.'file2.txt');
+        $this->assertFileExists($this->getTempDirectory().'2/file2.txt');
+    }
+
+    protected function assertFilesNotInDirectoryAfterCleanup()
+    {
+        $this->assertFileNotExists($this->getTempDirectory().'1/file1.txt');
+
+        $this->assertFileNotExists($this->getTempDirectory().'2/file1.txt');
     }
 }

@@ -53,16 +53,14 @@ class DirectoryCleanupCommand extends Command
     protected function deleteFilesIfOlderThanMinutes(array $directory)
     {
         $minutes = $directory['deleteAllOlderThanMinutes'];
+        $timeInPast = Carbon::now()->subMinutes($minutes);
 
         collect($this->filesystem->files($directory['name']))
-            ->filter(function ($file) use ($minutes) {
+            ->filter(function ($file) use ($timeInPast) {
 
                 $timeWhenFileWasModified = Carbon::createFromTimestamp(filemtime($file));
-                $timeInPast = Carbon::now()->subMinutes($minutes);
 
-                if ($timeInPast > $timeWhenFileWasModified) {
-                    return $file;
-                };
+                return ($timeWhenFileWasModified->lt($timeInPast));
 
             })
             ->each(function ($file) {
