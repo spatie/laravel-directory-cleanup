@@ -32,7 +32,7 @@ Next up, the service provider must be registered:
 Next, you must publish the config file:
 
 ```bash
-php artisan vendor:publish --provider="Spatie\DirectoryCleanup\ModelCleanupServiceProvider"
+php artisan vendor:publish --provider="Spatie\DirectoryCleanup\DirectoryCleanupServiceProvider"
 ```
 This is the content of the published config file `laravel-directory-cleanup`
 ```
