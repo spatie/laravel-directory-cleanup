@@ -25,7 +25,7 @@ Next up, the service provider must be registered:
 ```php
 'providers' => [
     ...
-    Spatie\ModelCleanup\DirectoryCleanupServiceProvider::class,
+    Spatie\DirectoryCleanup\DirectoryCleanupServiceProvider::class,
 
 ];
 ```
