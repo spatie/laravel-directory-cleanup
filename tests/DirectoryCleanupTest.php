@@ -36,7 +36,7 @@ class DirectoryCleanupTest extends TestCase
 
     protected function assertFilesInDirectoryBeforeCleanup()
     {
-       collect(['file1.txt', 'file2.txt'])->each(function ($file) {
+        collect(['file1.txt', 'file2.txt'])->each(function ($file) {
 
             $this->assertFileExists($this->getTempDirectory().'1/'.$file);
 

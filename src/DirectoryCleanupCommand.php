@@ -60,7 +60,7 @@ class DirectoryCleanupCommand extends Command
 
                 $timeWhenFileWasModified = Carbon::createFromTimestamp(filemtime($file));
 
-                return ($timeWhenFileWasModified->lt($timeInPast));
+                return $timeWhenFileWasModified->lt($timeInPast);
 
             })
             ->each(function ($file) {
