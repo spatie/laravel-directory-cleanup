@@ -15,7 +15,6 @@ class DirectoryCleanupTest extends TestCase
         touch("{$tempDirectory}1/file2.txt", Carbon::now()->timestamp);
         touch("{$tempDirectory}2/file1.txt", Carbon::now()->subMinutes(10)->timestamp);
         touch("{$tempDirectory}2/file2.txt", Carbon::now()->timestamp);
-
     }
 
     /** @test */
@@ -26,7 +25,6 @@ class DirectoryCleanupTest extends TestCase
         $this->artisan('clean:directories');
 
         $this->assertFilesLeftInDirectoryAfterCleanup();
-
     }
 
     protected function getTempDirectory()
@@ -38,7 +36,7 @@ class DirectoryCleanupTest extends TestCase
     {
         $files = collect(['file1.txt', 'file2.txt']);
 
-        $files->each(function($file){
+        $files->each(function ($file) {
 
             $this->assertFileExists($this->getTempDirectory().'1/'.$file);
 
@@ -54,4 +52,3 @@ class DirectoryCleanupTest extends TestCase
         $this->assertFileExists($this->getTempDirectory().'2/'.'file2.txt');
     }
 }
-

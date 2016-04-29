@@ -43,7 +43,7 @@ class DirectoryCleanupCommand extends Command
     {
         $directories = collect(config('laravel-directory-cleanup.directories'));
 
-        collect($directories)->each(function($directory){
+        collect($directories)->each(function ($directory) {
 
             $this->deleteFilesIfOlderThanMinutes($directory);
 
@@ -56,6 +56,7 @@ class DirectoryCleanupCommand extends Command
 
         collect($this->filesystem->files($directory['name']))
             ->filter(function ($file) use ($minutes) {
+
                 $timeWhenFileWasModified = Carbon::createFromTimestamp(filemtime($file));
                 $timeInPast = Carbon::now()->subMinutes($minutes);
 
@@ -71,5 +72,4 @@ class DirectoryCleanupCommand extends Command
 
         $this->info("Deleted expired file(s) from {$directory['name']}.");
     }
-
 }
