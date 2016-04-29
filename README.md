@@ -60,6 +60,8 @@ protected function schedule(Schedule $schedule)
    $schedule->command('clean:directories')->daily();
 }
 
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
