@@ -47,22 +47,23 @@ class DirectoryCleanupCommand extends Command
 
             $time = $directory['time'];
 
-            collect($this->filesystem->files($directory['name']))->each(function($file) use ($time){
+            $numberOfDeletedFiles = collect($this->filesystem->files($directory['name']))->each(function($file) use ($time){
 
                 $this->removeFile($file, $time);
 
-            });
+            })->count();
+
+            $this->info("Deleted {$numberOfDeletedFiles} file(s) from {$directory['name']}.");
         });
 
     }
 
     protected function removeFile($file, $time)
     {
-        $timeCreated = Carbon::createFromTimestamp(filectime( $file ));
         $timeModified = Carbon::createFromTimestamp(filemtime( $file ));
         $timePast = Carbon::now()->subMinutes($time);
 
-        if($timePast > $timeCreated || $timePast > $timeModified)
+        if($timePast > $timeModified)
         {
             $this->filesystem->delete($file);
         }
