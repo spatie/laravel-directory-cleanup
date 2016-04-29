@@ -45,28 +45,31 @@ class DirectoryCleanupCommand extends Command
 
         collect($directories)->each(function($directory){
 
-            $time = $directory['time'];
+            $this->deleteFilesIfOlderThanMinutes($directory);
 
-            $numberOfDeletedFiles = collect($this->filesystem->files($directory['name']))->each(function($file) use ($time){
-
-                $this->removeFile($file, $time);
-
-            })->count();
-
-            $this->info("Deleted {$numberOfDeletedFiles} file(s) from {$directory['name']}.");
         });
-
     }
 
-    protected function removeFile($file, $time)
+    protected function deleteFilesIfOlderThanMinutes(array $directory)
     {
-        $timeModified = Carbon::createFromTimestamp(filemtime( $file ));
-        $timePast = Carbon::now()->subMinutes($time);
+        $minutes = $directory['deleteAllOlderThanMinutes'];
 
-        if($timePast > $timeModified)
-        {
-            $this->filesystem->delete($file);
-        }
+        collect($this->filesystem->files($directory['name']))
+            ->filter(function ($file) use ($minutes) {
+                $timeWhenFileWasModified = Carbon::createFromTimestamp(filemtime($file));
+                $timeInPast = Carbon::now()->subMinutes($minutes);
+
+                if ($timeInPast > $timeWhenFileWasModified) {
+                    return $file;
+                };
+
+            })
+            ->each(function ($file) {
+
+                $this->filesystem->delete($file);
+            });
+
+        $this->info("Deleted expired file(s) from {$directory['name']}.");
     }
 
 }

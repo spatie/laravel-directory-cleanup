@@ -2,8 +2,7 @@
 
 namespace Spatie\DirectoryCleanup\Test;
 
-use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Filesystem\Filesystem;
+use Carbon\Carbon;
 
 class DirectoryCleanupTest extends TestCase
 {
@@ -11,37 +10,23 @@ class DirectoryCleanupTest extends TestCase
     {
         parent::setUp();
         $tempDirectory = $this->getTempDirectory();
-        $now = time();
 
-        touch("{$tempDirectory}1/file1.txt", ($now - 660));
-        touch("{$tempDirectory}1/file2.txt", $now);
-        touch("{$tempDirectory}2/file1.txt", $now - 310);
-        touch("{$tempDirectory}2/file2.txt", $now);
+        touch("{$tempDirectory}1/file1.txt", Carbon::now()->subMinutes(15)->timestamp);
+        touch("{$tempDirectory}1/file2.txt", Carbon::now()->timestamp);
+        touch("{$tempDirectory}2/file1.txt", Carbon::now()->subMinutes(10)->timestamp);
+        touch("{$tempDirectory}2/file2.txt", Carbon::now()->timestamp);
 
     }
 
     /** @test */
     public function it_can_cleanup_the_directories_specified_in_the_config_file_with_artisan_calling_command()
     {
-        $tempDirectory = $this->getTempDirectory();
-
-        $this->assertNumberOfFilesInDirectoryBefore($tempDirectory);
+        $this->assertFilesInDirectoryBeforeCleanup();
 
         $this->artisan('clean:directories');
 
-        $this->assertNumberOfFilesInDirectoryAfter($tempDirectory);
-    }
+        $this->assertFilesLeftInDirectoryAfterCleanup();
 
-    /** @test */
-    public function it_can_cleanup_the_directories_specified_in_the_config_file()
-    {
-        $tempDirectory = $this->getTempDirectory();
-
-        $this->assertNumberOfFilesInDirectoryBefore($tempDirectory);
-
-        $this->app->make(Kernel::class)->call('clean:directories');
-
-        $this->assertNumberOfFilesInDirectoryAfter($tempDirectory);
     }
 
     protected function getTempDirectory()
@@ -49,21 +34,24 @@ class DirectoryCleanupTest extends TestCase
         return __DIR__.'/temp';
     }
 
-    /**
-     * @param $tempDirectory
-     */
-    protected function assertNumberOfFilesInDirectoryBefore($tempDirectory)
+    protected function assertFilesInDirectoryBeforeCleanup()
     {
-        $this->assertEquals(2, count(app(Filesystem::class)->files("{$tempDirectory}1")));
-        $this->assertEquals(2, count(app(Filesystem::class)->files("{$tempDirectory}2")));
+        $files = collect(['file1.txt', 'file2.txt']);
+
+        $files->each(function($file){
+
+            $this->assertFileExists($this->getTempDirectory().'1/'.$file);
+
+            $this->assertFileExists($this->getTempDirectory().'2/'.$file);
+
+        });
     }
 
-    /**
-     * @param $tempDirectory
-     */
-    protected function assertNumberOfFilesInDirectoryAfter($tempDirectory)
+    protected function assertFilesLeftInDirectoryAfterCleanup()
     {
-        $this->assertEquals(1, count(app(Filesystem::class)->files("{$tempDirectory}1")));
-        $this->assertEquals(1, count(app(Filesystem::class)->files("{$tempDirectory}2")));
+        $this->assertFileExists($this->getTempDirectory().'1/'.'file2.txt');
+
+        $this->assertFileExists($this->getTempDirectory().'2/'.'file2.txt');
     }
 }
+

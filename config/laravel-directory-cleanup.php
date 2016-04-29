@@ -2,7 +2,7 @@
 
 return [
     'directories' => [
-        ['name' => 'directory_name_1', 'time' => '10'],
-        ['name' => 'directory_name_2', 'time' => '6']
+        ['name' => 'directory_name_1', 'deleteAllOlderThanMinutes' => 10],
+        ['name' => 'directory_name_2', 'deleteAllOlderThanMinutes' => 6]
     ]
 ];

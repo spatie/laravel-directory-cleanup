@@ -22,8 +22,8 @@ class TestCase extends OrchestraTestCase
         $app['config']->set('laravel-directory-cleanup',
             [
                 'directories' => [
-                    ['name'  => __DIR__.'/temp1', 'time' => '5'],
-                    ['name'  => __DIR__.'/temp2', 'time' => '1']
+                    ['name'  => __DIR__.'/temp1', 'deleteAllOlderThanMinutes' => '10'],
+                    ['name'  => __DIR__.'/temp2', 'deleteAllOlderThanMinutes' => '5']
                 ]
             ]);
     }
