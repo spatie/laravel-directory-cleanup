@@ -8,7 +8,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-directory-cleanup.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-directory-cleanup)
 
 This package will cleanup your directories. It remove all the files from the specified directories that are older than you've defined in the configuration file. 
-The only few things you have to do is adjust the configuration file and schedule a command that performs the cleanup.
+The only few things you have to do is to adjust the configuration file and schedule a command that performs the cleanup.
 
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
