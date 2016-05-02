@@ -1,8 +1,19 @@
 <?php
 
 return [
+
+
     'directories' => [
-        ['name' => 'directory_name_1', 'deleteAllOlderThanMinutes' => 10],
-        ['name' => 'directory_name_2', 'deleteAllOlderThanMinutes' => 6],
+        
+        /**
+         * Here you can specify which directories need to be cleanup. All files older than
+         * the specified amount of minutes will be deleted.
+         */
+
+        /*
+        'path' => [
+            'deleteAllOlderThanMinutes' => 60 * 24
+        ],
+        */
     ],
 ];

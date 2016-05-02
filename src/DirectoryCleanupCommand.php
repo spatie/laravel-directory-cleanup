@@ -21,6 +21,7 @@ class DirectoryCleanupCommand extends Command
      */
     protected $description = 'Clean up directories.';
 
+    /** @var \Illuminate\Filesystem\Filesystem */
     protected $filesystem;
 
     public function __construct(Filesystem $filesystem)
@@ -34,28 +35,22 @@ class DirectoryCleanupCommand extends Command
     {
         $this->comment('Cleaning directories...');
 
-        $this->cleanUp();
+        $directories = collect(config('laravel-directory-cleanup.directories'));
+
+        collect($directories)->each(function ($config, $directory) {
+
+            $this->deleteFilesIfOlderThanMinutes($directory, $config['deleteAllOlderThanMinutes']);
+
+        });
 
         $this->comment('All done!');
     }
 
-    protected function cleanUp()
+    protected function deleteFilesIfOlderThanMinutes(string $directory, int $minutes)
     {
-        $directories = collect(config('laravel-directory-cleanup.directories'));
-
-        collect($directories)->each(function ($directory) {
-
-            $this->deleteFilesIfOlderThanMinutes($directory);
-
-        });
-    }
-
-    protected function deleteFilesIfOlderThanMinutes(array $directory)
-    {
-        $minutes = $directory['deleteAllOlderThanMinutes'];
         $timeInPast = Carbon::now()->subMinutes($minutes);
 
-        collect($this->filesystem->files($directory['name']))
+        $files = collect($this->filesystem->files($directory))
             ->filter(function ($file) use ($timeInPast) {
 
                 $timeWhenFileWasModified = Carbon::createFromTimestamp(filemtime($file));
@@ -64,10 +59,9 @@ class DirectoryCleanupCommand extends Command
 
             })
             ->each(function ($file) {
-
                 $this->filesystem->delete($file);
             });
 
-        $this->info("Deleted expired file(s) from {$directory['name']}.");
+        $this->info("Deleted {$files->count()} file(s) from {$directory}.");
     }
 }

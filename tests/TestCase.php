@@ -4,12 +4,15 @@ namespace Spatie\DirectoryCleanup\Test;
 
 use Spatie\DirectoryCleanup\DirectoryCleanupServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use File;
 
 class TestCase extends OrchestraTestCase
 {
     public function setUp()
     {
         parent::setUp();
+
+        $this->getTempDirectory('', true);
     }
 
     protected function getPackageProviders($app)
@@ -17,14 +20,24 @@ class TestCase extends OrchestraTestCase
         return [DirectoryCleanupServiceProvider::class];
     }
 
-    protected function getEnvironmentSetUp($app)
+    protected function initializeDirectory($directory)
     {
-        $app['config']->set('laravel-directory-cleanup',
-            [
-                'directories' => [
-                    ['name' => __DIR__.'/temp1', 'deleteAllOlderThanMinutes' => '10'],
-                    ['name' => __DIR__.'/temp2', 'deleteAllOlderThanMinutes' => '5'],
-                ],
-            ]);
+        if (File::isDirectory($directory)) {
+            File::deleteDirectory($directory);
+        }
+        File::makeDirectory($directory);
+
+        file_put_contents($directory.'/.gitignore', '*'.PHP_EOL.'!.gitignore');
+    }
+
+    protected function getTempDirectory($subDirectory = '', $createIfNotExists = false)
+    {
+        $fullDirectoryName = __DIR__."/temp/{$subDirectory}";
+
+        if ($createIfNotExists) {
+            $this->initializeDirectory($fullDirectoryName);
+        }
+
+        return $fullDirectoryName;
     }
 }
