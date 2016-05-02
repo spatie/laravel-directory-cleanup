@@ -11,7 +11,7 @@ return [
          */
 
         /*
-        'path' => [
+        'path/to/a/directory' => [
             'deleteAllOlderThanMinutes' => 60 * 24
         ],
         */

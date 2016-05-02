@@ -1,4 +1,4 @@
-# Laravel directory cleanup
+# Delete old files in Laravel apps
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-directory-cleanup.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-directory-cleanup)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
@@ -7,8 +7,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-directory-cleanup.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-directory-cleanup)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-directory-cleanup.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-directory-cleanup)
 
-This package will cleanup your directories. It remove all the files from the specified directories that are older than you've defined in the configuration file. 
-The only few things you have to do is to adjust the configuration file and schedule a command that performs the cleanup.
+This package will delete old files from directories. You can use a configuration file to specify the maximum age of a file in a certain directory.
 
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
@@ -37,19 +36,29 @@ php artisan vendor:publish --provider="Spatie\DirectoryCleanup\DirectoryCleanupS
 This is the content of the published config file `laravel-directory-cleanup`
 ```
 return [
+
     'directories' => [
-        ['name' => 'directory_name_1', 'deleteAllOlderThanMinutes' => 10],
-        ['name' => 'directory_name_2', 'deleteAllOlderThanMinutes' => 10],
+        
+        /**
+         * Here you can specify which directories need to be cleanup. All files older than
+         * the specified amount of minutes will be deleted.
+         */
+
+        /*
+        'path/to/a/directory' => [
+            'deleteAllOlderThanMinutes' => 60 * 24
+        ],
+        */
     ],
 ];
-
 ```
 
 ## Usage
 
-In the configuration file you must define directories you want and how old files must be in minutes to get cleaned up.
+Specify the directories that need cleaning in the config file.
 
-When running the console command `clean:directories` all in the configuration file specified directories older there defined `deleteAllOlderThanMinutes` will be deleted.
+When running the console command `clean:directories` all files in the specified directories older then `deleteAllOlderThanMinutes` will be deleted.
+
 This command can be scheduled in Laravel's console kernel.
 
 ```php
