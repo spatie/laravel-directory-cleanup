@@ -9,6 +9,12 @@
     "license": "MIT",
     "authors": [
         {
+            "name": "Freek Van der Herten",
+            "email": "freek@spatie.be",
+            "homepage": "https://spatie.be",
+            "role": "Developer"
+        },
+        {
             "name": "Jolita Grazyte",
             "email": "jolita@spatie.be",
             "homepage": "https://spatie.be",
