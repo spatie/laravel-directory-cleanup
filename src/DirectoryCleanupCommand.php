@@ -3,7 +3,6 @@
 namespace Spatie\DirectoryCleanup;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 
 class DirectoryCleanupCommand extends Command
 {
@@ -19,16 +18,6 @@ class DirectoryCleanupCommand extends Command
      * @var string
      */
     protected $description = 'Clean up directories.';
-
-    /** @var \Illuminate\Filesystem\Filesystem */
-    protected $filesystem;
-
-    public function __construct(Filesystem $filesystem)
-    {
-        parent::__construct();
-
-        $this->filesystem = $filesystem;
-    }
 
     public function handle()
     {
