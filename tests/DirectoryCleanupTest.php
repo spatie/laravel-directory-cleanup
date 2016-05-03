@@ -14,7 +14,6 @@ class DirectoryCleanupTest extends TestCase
     /** @test */
     public function it_can_cleanup_the_directories_specified_in_the_config_file()
     {
-
         $numberOfDirectories = 5;
 
         $directories = [];

@@ -2,7 +2,6 @@
 
 namespace Spatie\DirectoryCleanup;
 
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
@@ -48,20 +47,10 @@ class DirectoryCleanupCommand extends Command
 
     protected function deleteFilesIfOlderThanMinutes(string $directory, int $minutes)
     {
-        $timeInPast = Carbon::now()->subMinutes($minutes);
+        $deletedFiles = app(DirectoryCleaner::class)
+            ->setDirectory($directory)
+            ->deleteFilesOlderThanMinutes($minutes);
 
-        $files = collect($this->filesystem->files($directory))
-            ->filter(function ($file) use ($timeInPast) {
-
-                $timeWhenFileWasModified = Carbon::createFromTimestamp(filemtime($file));
-
-                return $timeWhenFileWasModified->lt($timeInPast);
-
-            })
-            ->each(function ($file) {
-                $this->filesystem->delete($file);
-            });
-
-        $this->info("Deleted {$files->count()} file(s) from {$directory}.");
+        $this->info("Deleted {$deletedFiles->count()} file(s) from {$directory}.");
     }
 }
