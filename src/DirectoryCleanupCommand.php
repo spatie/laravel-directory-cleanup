@@ -6,17 +6,10 @@ use Illuminate\Console\Command;
 
 class DirectoryCleanupCommand extends Command
 {
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $signature = 'clean:directories';
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    
+    /** @var string */
     protected $description = 'Clean up directories.';
 
     public function handle()
