@@ -43,18 +43,13 @@ class DirectoryCleaner
     {
         $timeInPast = Carbon::now()->subMinutes($minutes);
 
-        $deletedFiles = collect($this->filesystem->files($this->directory))
+        return collect($this->filesystem->files($this->directory))
             ->filter(function ($file) use ($timeInPast) {
-
-                $timeWhenFileWasModified = Carbon::createFromTimestamp(filemtime($file));
-
-                return $timeWhenFileWasModified->lt($timeInPast);
-
+                return Carbon::createFromTimestamp(filemtime($file))
+                    ->lt($timeInPast);
             })
             ->each(function ($file) {
                 $this->filesystem->delete($file);
             });
-
-        return $deletedFiles;
     }
 }
