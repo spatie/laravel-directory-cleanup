@@ -8,7 +8,7 @@ class DirectoryCleanupCommand extends Command
 {
     /** @var string */
     protected $signature = 'clean:directories';
-    
+
     /** @var string */
     protected $description = 'Clean up directories.';
 
@@ -20,18 +20,22 @@ class DirectoryCleanupCommand extends Command
 
         collect($directories)->each(function ($config, $directory) {
 
-            $this->deleteFilesIfOlderThanMinutes($directory, $config['deleteAllOlderThanMinutes']);
+            $this->deleteFilesIfOlderThanMinutes(
+                $directory,
+                $config['deleteAllOlderThanMinutes'],
+                $config['deleteAllWithPrefix']
+            );
 
         });
 
         $this->comment('All done!');
     }
 
-    protected function deleteFilesIfOlderThanMinutes(string $directory, int $minutes)
+    protected function deleteFilesIfOlderThanMinutes(string $directory, int $minutes, string $prefix = null)
     {
         $deletedFiles = app(DirectoryCleaner::class)
             ->setDirectory($directory)
-            ->deleteFilesOlderThanMinutes($minutes);
+            ->deleteFilesOlderThanMinutes($minutes, $prefix);
 
         $this->info("Deleted {$deletedFiles->count()} file(s) from {$directory}.");
     }
