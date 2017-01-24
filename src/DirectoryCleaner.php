@@ -3,8 +3,8 @@
 namespace Spatie\DirectoryCleanup;
 
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Illuminate\Filesystem\Filesystem;
 
 class DirectoryCleaner
 {
