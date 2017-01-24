@@ -2,9 +2,9 @@
 
 namespace Spatie\DirectoryCleanup\Test;
 
-use Spatie\DirectoryCleanup\DirectoryCleanupServiceProvider;
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use File;
+use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Spatie\DirectoryCleanup\DirectoryCleanupServiceProvider;
 
 class TestCase extends OrchestraTestCase
 {
