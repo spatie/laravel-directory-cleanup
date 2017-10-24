@@ -10,16 +10,6 @@
 
 This package will delete old files from directories. You can use a configuration file to specify the maximum age of a file in a certain directory.
 
-Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
-
-## Postcardware
-
-You're free to use this package (it's [MIT-licensed](LICENSE.md)), but if it makes it to your production environment you are required to send us a postcard from your hometown, mentioning which of our package(s) you are using.
-
-Our address is: Spatie, Samberstraat 69D, 2060 Antwerp, Belgium.
-
-The best postcards will get published on the open source page on our website.
-
 ## Installation
 
 You can install the package via composer:
@@ -28,7 +18,7 @@ You can install the package via composer:
 composer require spatie/laravel-directory-cleanup
 ```
 
-Next up, the service provider must be registered:
+In Laravel 5.5 the service provider will automatically get registered. In older versions of the framework just add the service provider in `config/app.php` file:
 
 ```php
 'providers' => [
@@ -98,14 +88,26 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 If you discover any security related issues, please email freek@spatie.be instead of using the issue tracker.
 
+## Postcardware
+
+You're free to use this package, but if it makes it to your production environment we highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
+
+Our address is: Spatie, Samberstraat 69D, 2060 Antwerp, Belgium.
+
+We publish all received postcards [on our company website](https://spatie.be/en/opensource/postcards).
+
 ## Credits
 
 - [Jolita Grazyte](https://github.com/JolitaGrazyte)
 - [Freek Van der Herten](https://github.com/freekmurze)
 - [All Contributors](../../contributors)
 
-## About Spatie
+## Support us
+
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
+
+Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie). 
+All pledges will be dedicated to allocating workforce on maintenance and new awesome stuff.
 
 ## License
 
