@@ -20,11 +20,11 @@ class DirectoryCleanupCommand extends Command
 
         collect($directories)->each(function ($config, $directory) {
 
-            if(isset($config['deleteFilesOlderThanMinutes'])) {
+            if (isset($config['deleteFilesOlderThanMinutes'])) {
                 $this->deleteFilesIfOlderThanMinutes($directory, $config['deleteFilesOlderThanMinutes']);
             }
 
-            if(isset($config['deleteDirectoriesOlderThanMinutes'])) {
+            if (isset($config['deleteDirectoriesOlderThanMinutes'])) {
                 $this->deleteDirectoriesIfOlderThanMinutes($directory, $config['deleteDirectoriesOlderThanMinutes']);
             }
 
