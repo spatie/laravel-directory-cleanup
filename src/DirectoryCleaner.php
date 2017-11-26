@@ -39,8 +39,26 @@ class DirectoryCleaner
      *
      * @return \Illuminate\Support\Collection
      */
-    public function deleteFilesOlderThanMinutes(int $minutes) : Collection
+    public function deleteDirectoriesOlderThanMinutes(int $minutes) : Collection
     {
+        $timeInPast = Carbon::now()->subMinutes($minutes);
+
+        return collect($this->filesystem->directories($this->directory))
+            ->filter(function ($file) use ($timeInPast) {
+                return Carbon::createFromTimestamp(filemtime($file))
+                             ->lt($timeInPast);
+            })
+            ->each(function ($file) {
+                $this->filesystem->deleteDirectory($file);
+            });
+    }
+
+    /**
+     * @param int $minutes
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function deleteFilesOlderThanMinutes(int $minutes) : Collection {
         $timeInPast = Carbon::now()->subMinutes($minutes);
 
         return collect($this->filesystem->files($this->directory))
