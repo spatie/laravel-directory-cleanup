@@ -19,7 +19,6 @@ class DirectoryCleanupCommand extends Command
         $directories = collect(config('laravel-directory-cleanup.directories'));
 
         collect($directories)->each(function ($config, $directory) {
-
             if (isset($config['deleteFilesOlderThanMinutes'])) {
                 $this->deleteFilesIfOlderThanMinutes($directory, $config['deleteFilesOlderThanMinutes']);
             }
@@ -27,7 +26,6 @@ class DirectoryCleanupCommand extends Command
             if (isset($config['deleteDirectoriesOlderThanMinutes'])) {
                 $this->deleteDirectoriesIfOlderThanMinutes($directory, $config['deleteDirectoriesOlderThanMinutes']);
             }
-
         });
 
         $this->comment('All done!');
