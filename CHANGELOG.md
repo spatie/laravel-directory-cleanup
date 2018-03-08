@@ -1,6 +1,10 @@
 # Changelog
 
-All Notable changes to `laravel-directory-cleanup` will be documented in this file
+All notable changes to `laravel-directory-cleanup` will be documented in this file
+
+## 1.1.2 - 2018-03-08
+
+- add Laravel 5.6 support
 
 ## 1.1.1 - 2018-03-07
 
