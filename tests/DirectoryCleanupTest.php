@@ -43,8 +43,51 @@ class DirectoryCleanupTest extends TestCase
         }
     }
 
+    /** @test */
+    public function it_can_cleanup_the_directories_specified_in_the_config_file_recursivly()
+    {
+        $numberSubOfDirectories = 5;
+
+        $directories = [];
+
+        $this->getTempDirectory('top/' . implode('/', range(1, $numberSubOfDirectories)), true);
+        $directories[$this->getTempDirectory('top')] = ['deleteAllOlderThanMinutes' => 3];
+
+        $this->app['config']->set('laravel-directory-cleanup', compact('directories'));
+
+        $path = $this->getTempDirectory('top') . '/';
+        foreach (range(1, $numberSubOfDirectories + 1) as $level) {
+            foreach (range(1, $numberSubOfDirectories) as $ageInMinutes) {
+                $this->createFile("{$path}/{$ageInMinutes}MinutesOld.txt", $ageInMinutes);
+            }
+            $path .= "{$level}/";
+        }
+
+        $this->artisan('clean:directories');
+
+        foreach ($directories as $directory => $config) {
+            $path = $directory . '/';
+
+            foreach (range(1, $numberSubOfDirectories + 1) as $level) {
+                foreach (range(1, $numberSubOfDirectories) as $ageInMinutes) {
+                    if ($ageInMinutes < $config['deleteAllOlderThanMinutes']) {
+                        $this->assertFileExists("{$path}/{$ageInMinutes}MinutesOld.txt");
+                    } else {
+                        $this->assertFileNotExists("{$path}/{$ageInMinutes}MinutesOld.txt");
+                    }
+                }
+                $path .= "{$level}/";
+            }
+        }
+    }
+
     protected function createFile(string $fileName, int $ageInMinutes)
     {
         touch($fileName, Carbon::now()->subMinutes($ageInMinutes)->subSeconds(5)->timestamp);
+    }
+
+    protected function createDirectory(string $fileName, int $ageInMinutes)
+    {
+        mkdir($fileName);
     }
 }

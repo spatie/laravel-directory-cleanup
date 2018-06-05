@@ -25,14 +25,14 @@ class TestCase extends OrchestraTestCase
         if (File::isDirectory($directory)) {
             File::deleteDirectory($directory);
         }
-        File::makeDirectory($directory);
+        File::makeDirectory($directory, 0775, true);
 
-        file_put_contents($directory.'/.gitignore', '*'.PHP_EOL.'!.gitignore');
+        file_put_contents($directory . '/.gitignore', '*' . PHP_EOL . '!.gitignore');
     }
 
     protected function getTempDirectory($subDirectory = '', $createIfNotExists = false)
     {
-        $fullDirectoryName = __DIR__."/temp/{$subDirectory}";
+        $fullDirectoryName = __DIR__ . "/temp/{$subDirectory}";
 
         if ($createIfNotExists) {
             $this->initializeDirectory($fullDirectoryName);
