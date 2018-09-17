@@ -19,6 +19,7 @@ class DirectoryCleaner
      */
     public function __construct()
     {
+        // use our default storage by default
         $this->filesystem = Storage::disk();
     }
 
@@ -30,6 +31,18 @@ class DirectoryCleaner
     public function setDirectory(string $directory)
     {
         $this->directory = $directory;
+
+        return $this;
+    }
+
+    /**
+     * @param string $driver
+     *
+     * @return $this
+     */
+    public function setFileSystemDriver(string $driver)
+    {
+        $this->filesystem = Storage::disk($driver);
 
         return $this;
     }
