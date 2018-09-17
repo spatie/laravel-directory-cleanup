@@ -42,12 +42,11 @@ class DirectoryCleaner
      */
     public function setFileSystemDriver(string $driver)
     {
-
         $this->filesystem = Storage::disk($driver);
 
         return $this;
     }
-
+    
     /**
      * @param int $minutes
      *
