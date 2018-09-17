@@ -4,22 +4,22 @@ namespace Spatie\DirectoryCleanup;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
 
 class DirectoryCleaner
 {
-    /** @var \Illuminate\Filesystem\Filesystem */
+    /** @var \Illuminate\Support\Facades\Storage */
     protected $filesystem;
 
     /** @var string */
     protected $directory;
 
     /**
-     * @param \Illuminate\Filesystem\Filesystem $filesystem
+     * DirectoryCleaner constructor.
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct()
     {
-        $this->filesystem = $filesystem;
+        $this->filesystem = Storage::disk();
     }
 
     /**
@@ -45,7 +45,7 @@ class DirectoryCleaner
 
         return collect($this->filesystem->allFiles($this->directory))
             ->filter(function ($file) use ($timeInPast) {
-                return Carbon::createFromTimestamp(filemtime($file))
+                return Carbon::createFromTimestamp($this->filesystem->lastModified($file))
                     ->lt($timeInPast);
             })
             ->each(function ($file) {
