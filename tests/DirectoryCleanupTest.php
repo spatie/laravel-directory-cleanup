@@ -50,12 +50,12 @@ class DirectoryCleanupTest extends TestCase
 
         $directories = [];
 
-        $this->getTempDirectory('top/' . implode('/', range(1, $numberSubOfDirectories)), true);
+        $this->getTempDirectory('top/'.implode('/', range(1, $numberSubOfDirectories)), true);
         $directories[$this->getTempDirectory('top')] = ['deleteAllOlderThanMinutes' => 3];
 
         $this->app['config']->set('laravel-directory-cleanup', compact('directories'));
 
-        $path = $this->getTempDirectory('top') . '/';
+        $path = $this->getTempDirectory('top').'/';
         foreach (range(1, $numberSubOfDirectories + 1) as $level) {
             foreach (range(1, $numberSubOfDirectories) as $ageInMinutes) {
                 $this->createFile("{$path}/{$ageInMinutes}MinutesOld.txt", $ageInMinutes);
@@ -66,7 +66,7 @@ class DirectoryCleanupTest extends TestCase
         $this->artisan('clean:directories');
 
         foreach ($directories as $directory => $config) {
-            $path = $directory . '/';
+            $path = $directory.'/';
 
             foreach (range(1, $numberSubOfDirectories + 1) as $level) {
                 foreach (range(1, $numberSubOfDirectories) as $ageInMinutes) {
