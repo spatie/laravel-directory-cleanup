@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DirectoryCleaner
 {
-    /** @var \Illuminate\Filesystem\Filesystem */
+    /** @var \Illuminate\Contracts\Filesystem\Filesystem */
     protected $filesystem;
 
     /** @var string */
