@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DirectoryCleaner
 {
-    /** @var \Illuminate\Support\Facades\Storage */
+    /** @var \Illuminate\Filesystem\Filesystem */
     protected $filesystem;
 
     /** @var string */
@@ -42,6 +42,7 @@ class DirectoryCleaner
      */
     public function setFileSystemDriver(string $driver)
     {
+
         $this->filesystem = Storage::disk($driver);
 
         return $this;
@@ -52,13 +53,14 @@ class DirectoryCleaner
      *
      * @return \Illuminate\Support\Collection
      */
-    public function deleteFilesOlderThanMinutes(int $minutes) : Collection
+    public function deleteFilesOlderThanMinutes(int $minutes): Collection
     {
         $timeInPast = Carbon::now()->subMinutes($minutes);
 
         return collect($this->filesystem->allFiles($this->directory))
             ->filter(function ($file) use ($timeInPast) {
-                return Carbon::createFromTimestamp($this->filesystem->lastModified($file))
+                return Carbon
+                    ::createFromTimestamp($this->filesystem->lastModified($file))
                     ->lt($timeInPast);
             })
             ->each(function ($file) {
