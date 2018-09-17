@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-directory-cleanup` will be documented in this file
 
+## 1.1.3 - 2018-04-19
+
+- add Laravel 5.7 support
+
 ## 1.1.2 - 2018-03-08
 
 - add Laravel 5.6 support
