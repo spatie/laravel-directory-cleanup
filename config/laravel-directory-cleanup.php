@@ -7,6 +7,7 @@ return [
         /*
          * Here you can specify which directories need to be cleanup. All files older than
          * the specified amount of minutes will be deleted.
+         * You can also specify a list of files which should never be deleted.
          */
 
         /*
