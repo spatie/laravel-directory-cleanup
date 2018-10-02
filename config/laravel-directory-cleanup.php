@@ -11,7 +11,10 @@ return [
 
         /*
         'path/to/a/directory' => [
-            'deleteAllOlderThanMinutes' => 60 * 24
+            'deleteAllOlderThanMinutes' => 60 * 24,
+            'ignoredFiles' => [
+                // 'keepMe.txt'
+            ]
         ],
         */
     ],
