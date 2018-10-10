@@ -2,7 +2,7 @@
 
 return [
 
-    'cleanup_policy' => \Spatie\DirectoryCleanup\Policies\DefaultCleanupPolicy::class,
+    'cleanup_policy' => \Spatie\DirectoryCleanup\Policies\Basic::class,
 
     'directories' => [
 

@@ -4,9 +4,9 @@ namespace Spatie\DirectoryCleanup\Policies;
 
 use Symfony\Component\Finder\SplFileInfo;
 
-class DefaultCleanupPolicy
+class Basic extends Policy
 {
-    public function shouldBeDeleted(SplFileInfo $file) : bool
+    public function configure(SplFileInfo $file) : bool
     {
         return true;
     }

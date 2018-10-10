@@ -43,7 +43,7 @@ class DirectoryCleaner
     {
         $timeInPast = Carbon::now()->subMinutes($config['deleteAllOlderThanMinutes']);
 
-        $policy = resolve(config('laravel-directory-cleanup.cleanup_policy', \Spatie\DirectoryCleanup\Policies\DefaultCleanupPolicy::class));
+        $policy = resolve(config('laravel-directory-cleanup.cleanup_policy', \Spatie\DirectoryCleanup\Policies\Basic::class));
 
         return collect($this->filesystem->allFiles($this->directory))
             ->filter(function ($file) use ($timeInPast) {
@@ -51,7 +51,7 @@ class DirectoryCleaner
                     ->lt($timeInPast);
             })
             ->filter(function ($file) use ($policy) {
-                return $policy->shouldBeDeleted($file);
+                return $policy->configure($file);
             })
             ->each(function ($file) {
                 $this->filesystem->delete($file);
