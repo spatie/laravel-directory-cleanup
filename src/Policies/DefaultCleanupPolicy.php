@@ -6,7 +6,7 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class DefaultCleanupPolicy
 {
-    public function shouldBeDeleted(SplFileInfo $path) : bool
+    public function shouldBeDeleted(SplFileInfo $file) : bool
     {
         return true;
     }

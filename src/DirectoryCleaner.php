@@ -43,16 +43,15 @@ class DirectoryCleaner
     {
         $timeInPast = Carbon::now()->subMinutes($config['deleteAllOlderThanMinutes']);
 
+        $policy = resolve(config('laravel-directory-cleanup.cleanup_policy', \Spatie\DirectoryCleanup\Policies\DefaultCleanupPolicy::class));
+
         return collect($this->filesystem->allFiles($this->directory))
-            ->reject(function ($file) use ($config) {
-                return in_array(
-                    $file->getFilename(),
-                    array_get($config, 'ignoredFiles', [])
-                );
-            })
             ->filter(function ($file) use ($timeInPast) {
                 return Carbon::createFromTimestamp(filemtime($file))
                     ->lt($timeInPast);
+            })
+            ->filter(function ($file) use ($policy) {
+                return $policy->shouldBeDeleted($file);
             })
             ->each(function ($file) {
                 $this->filesystem->delete($file);

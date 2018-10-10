@@ -91,7 +91,9 @@ class DirectoryCleanupTest extends TestCase
             ]
         ];
 
-        $this->app['config']->set('laravel-directory-cleanup', compact('directories'));
+        $cleanup_policy = \Spatie\DirectoryCleanup\Test\CustomCleanupPolicy::class;
+
+        $this->app['config']->set('laravel-directory-cleanup', compact('directories', 'cleanup_policy'));
 
         foreach ($directories as $directory => $config) {
             $this->createFile("{$directory}/keepThisFile.txt", 5);
