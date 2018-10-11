@@ -35,6 +35,13 @@ This is the content of the published config file `laravel-directory-cleanup`
 ```
 return [
 
+    /*
+     * A policy will determine if a given file should be deleted. This is the perfect
+     * place to apply custom rules (like only deleting files with a certain extension).
+     * A valid policy is any class that extends `Spatie\DirectoryCleanup\Policies\Policy`
+     */
+    'cleanup_policy' => \Spatie\DirectoryCleanup\Policies\Basic::class,
+
     'directories' => [
         
         /**
@@ -67,6 +74,28 @@ protected function schedule(Schedule $schedule)
    $schedule->command('clean:directories')->daily();
 }
 
+```
+
+If you want to apply additional conditional logic before a file is deleted, you can replace the default `cleanup_policy` with a custom one.
+Create a class which extends `Spatie\DirectoryCleanup\Policies\Policy` and add your logic to the `allow` method. Make sure to return `true` if the file should be deleted.
+
+```php
+// app/CleanupPolicies/MyPolicy.php
+
+namespace App\CleanupPolicies;
+
+use Symfony\Component\Finder\SplFileInfo;
+use Spatie\DirectoryCleanup\Policies\Policy;
+
+class MyPolicy extends Policy
+{
+    public function allow(SplFileInfo $file) : bool
+    {
+        $filesToKeep = ['robots.txt'];
+
+        return ! in_array($file->getFilename(), $filesToKeep);
+    }
+}
 ```
 
 ## Changelog

@@ -57,6 +57,9 @@ class DirectoryCleaner
             });
     }
 
+    /**
+     * @return \Spatie\DirectoryCleanup\Policies\Policy
+     */
     protected function policy() : Policy
     {
         return resolve(config(
