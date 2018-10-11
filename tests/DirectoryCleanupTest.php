@@ -86,9 +86,6 @@ class DirectoryCleanupTest extends TestCase
     {
         $directories[$this->getTempDirectory(1, true)] = [
             'deleteAllOlderThanMinutes' => 5,
-            'ignoredFiles' => [
-                'keepThisFile.txt'
-            ]
         ];
 
         $cleanup_policy = \Spatie\DirectoryCleanup\Test\CustomCleanupPolicy::class;

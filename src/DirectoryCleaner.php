@@ -3,8 +3,8 @@
 namespace Spatie\DirectoryCleanup;
 
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Illuminate\Filesystem\Filesystem;
 use Spatie\DirectoryCleanup\Policies\Policy;
 
 class DirectoryCleaner
@@ -49,7 +49,7 @@ class DirectoryCleaner
                 return Carbon::createFromTimestamp(filemtime($file))
                     ->lt($timeInPast);
             })
-            ->filter(function ($file)  {
+            ->filter(function ($file) {
                 return $this->policy()->allow($file);
             })
             ->each(function ($file) {
