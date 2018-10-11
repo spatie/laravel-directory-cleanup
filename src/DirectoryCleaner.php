@@ -36,13 +36,13 @@ class DirectoryCleaner
     }
 
     /**
-     * @param array $config
+     * @param int $minutes
      *
      * @return \Illuminate\Support\Collection
      */
-    public function deleteFilesOlderThanMinutes(array $config) : Collection
+    public function deleteFilesOlderThanMinutes(int $minutes) : Collection
     {
-        $timeInPast = Carbon::now()->subMinutes($config['deleteAllOlderThanMinutes']);
+        $timeInPast = Carbon::now()->subMinutes($minutes);
 
         return collect($this->filesystem->allFiles($this->directory))
             ->filter(function ($file) use ($timeInPast) {
