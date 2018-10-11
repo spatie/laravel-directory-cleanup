@@ -6,5 +6,5 @@ use Symfony\Component\Finder\SplFileInfo;
 
 abstract class Policy
 {
-    abstract public function configure(SplFileInfo $file) : bool;
+    abstract public function allow(SplFileInfo $file) : bool;
 }

@@ -7,11 +7,10 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class CustomCleanupPolicy extends Policy
 {
-    public function configure(SplFileInfo $file) : bool
+    public function allow(SplFileInfo $file) : bool
     {
         $filesToKeep = ['keepThisFile.txt'];
 
         return ! in_array($file->getFilename(), $filesToKeep);
     }
-
 }
