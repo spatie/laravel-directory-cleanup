@@ -5,6 +5,7 @@ namespace Spatie\DirectoryCleanup;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
+use Spatie\DirectoryCleanup\Policies\Policy;
 
 class DirectoryCleaner
 {
@@ -48,8 +49,22 @@ class DirectoryCleaner
                 return Carbon::createFromTimestamp(filemtime($file))
                     ->lt($timeInPast);
             })
+            ->filter(function ($file) {
+                return $this->policy()->allow($file);
+            })
             ->each(function ($file) {
                 $this->filesystem->delete($file);
             });
+    }
+
+    /**
+     * @return \Spatie\DirectoryCleanup\Policies\Policy
+     */
+    protected function policy() : Policy
+    {
+        return resolve(config(
+            'laravel-directory-cleanup.cleanup_policy',
+            \Spatie\DirectoryCleanup\Policies\Basic::class
+        ));
     }
 }

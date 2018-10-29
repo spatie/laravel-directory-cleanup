@@ -81,6 +81,30 @@ class DirectoryCleanupTest extends TestCase
         }
     }
 
+    /** @test */
+    public function it_can_cleanup_the_directories_specified_in_the_config_file_but_keep_some_files()
+    {
+        $directories[$this->getTempDirectory(1, true)] = [
+            'deleteAllOlderThanMinutes' => 5,
+        ];
+
+        $cleanup_policy = \Spatie\DirectoryCleanup\Test\CustomCleanupPolicy::class;
+
+        $this->app['config']->set('laravel-directory-cleanup', compact('directories', 'cleanup_policy'));
+
+        foreach ($directories as $directory => $config) {
+            $this->createFile("{$directory}/keepThisFile.txt", 5);
+            $this->createFile("{$directory}/removeThisFile.txt", 5);
+        }
+
+        $this->artisan('clean:directories');
+
+        foreach ($directories as $directory => $config) {
+            $this->assertFileExists("{$directory}/keepThisFile.txt");
+            $this->assertFileNotExists("{$directory}/removeThisFile.txt");
+        }
+    }
+
     protected function createFile(string $fileName, int $ageInMinutes)
     {
         touch($fileName, Carbon::now()->subMinutes($ageInMinutes)->subSeconds(5)->timestamp);
