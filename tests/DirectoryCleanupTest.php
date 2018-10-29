@@ -88,7 +88,7 @@ class DirectoryCleanupTest extends TestCase
             'deleteAllOlderThanMinutes' => 5,
         ];
 
-        $cleanup_policy = \Spatie\DirectoryCleanup\Test\CustomCleanupPolicy::class;
+        $cleanup_policy = \Spatie\DirectoryCleanup\Test\CustomCleanupCleanupPolicy::class;
 
         $this->app['config']->set('laravel-directory-cleanup', compact('directories', 'cleanup_policy'));
 

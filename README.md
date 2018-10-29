@@ -32,29 +32,33 @@ Next, you must publish the config file:
 php artisan vendor:publish --provider="Spatie\DirectoryCleanup\DirectoryCleanupServiceProvider"
 ```
 This is the content of the published config file `laravel-directory-cleanup`
+
 ```
 return [
 
-    /*
-     * A policy will determine if a given file should be deleted. This is the perfect
-     * place to apply custom rules (like only deleting files with a certain extension).
-     * A valid policy is any class that extends `Spatie\DirectoryCleanup\Policies\Policy`
-     */
-    'cleanup_policy' => \Spatie\DirectoryCleanup\Policies\Basic::class,
-
     'directories' => [
-        
-        /**
+
+        /*
          * Here you can specify which directories need to be cleanup. All files older than
          * the specified amount of minutes will be deleted.
          */
 
         /*
         'path/to/a/directory' => [
-            'deleteAllOlderThanMinutes' => 60 * 24
+            'deleteAllOlderThanMinutes' => 60 * 24,
         ],
         */
     ],
+
+    /*
+     * If a file is older than the amount of minutes specified, a cleanup policy will decide if that file
+     * should be deleted. By default every file that is older that the specified amount of minutes
+     * will be deleted.
+     * 
+     * You can customize this behaviour by writing your own clean up policy.  A valid policy
+     * is any class that implements `Spatie\DirectoryCleanup\Policies\CleanupPolicy`.
+     */
+    'cleanup_policy' => \Spatie\DirectoryCleanup\Policies\DeleteEverything::class,
 ];
 ```
 
@@ -76,8 +80,10 @@ protected function schedule(Schedule $schedule)
 
 ```
 
+## Writing a custom clean up policy
+
 If you want to apply additional conditional logic before a file is deleted, you can replace the default `cleanup_policy` with a custom one.
-Create a class which extends `Spatie\DirectoryCleanup\Policies\Policy` and add your logic to the `allow` method. Make sure to return `true` if the file should be deleted.
+Create a class which implements `Spatie\DirectoryCleanup\Policies\CleanupPolicy` and add your logic to the `shouldDelete` method.
 
 ```php
 // app/CleanupPolicies/MyPolicy.php
@@ -85,11 +91,11 @@ Create a class which extends `Spatie\DirectoryCleanup\Policies\Policy` and add y
 namespace App\CleanupPolicies;
 
 use Symfony\Component\Finder\SplFileInfo;
-use Spatie\DirectoryCleanup\Policies\Policy;
+use Spatie\DirectoryCleanup\Policies\CleanupPolicy;
 
-class MyPolicy extends Policy
+class MyPolicy implements CleanupPolicy
 {
-    public function allow(SplFileInfo $file) : bool
+    public function shouldDelete(SplFileInfo $file) : bool
     {
         $filesToKeep = ['robots.txt'];
 

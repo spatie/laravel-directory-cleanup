@@ -5,7 +5,7 @@ namespace Spatie\DirectoryCleanup;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
-use Spatie\DirectoryCleanup\Policies\Policy;
+use Spatie\DirectoryCleanup\Policies\CleanupPolicy;
 
 class DirectoryCleaner
 {
@@ -15,19 +15,11 @@ class DirectoryCleaner
     /** @var string */
     protected $directory;
 
-    /**
-     * @param \Illuminate\Filesystem\Filesystem $filesystem
-     */
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * @param string $directory
-     *
-     * @return $this
-     */
     public function setDirectory(string $directory)
     {
         $this->directory = $directory;
@@ -35,11 +27,6 @@ class DirectoryCleaner
         return $this;
     }
 
-    /**
-     * @param int $minutes
-     *
-     * @return \Illuminate\Support\Collection
-     */
     public function deleteFilesOlderThanMinutes(int $minutes) : Collection
     {
         $timeInPast = Carbon::now()->subMinutes($minutes);
@@ -50,21 +37,18 @@ class DirectoryCleaner
                     ->lt($timeInPast);
             })
             ->filter(function ($file) {
-                return $this->policy()->allow($file);
+                return $this->policy()->shouldDelete($file);
             })
             ->each(function ($file) {
                 $this->filesystem->delete($file);
             });
     }
 
-    /**
-     * @return \Spatie\DirectoryCleanup\Policies\Policy
-     */
-    protected function policy() : Policy
+    protected function policy() : CleanupPolicy
     {
         return resolve(config(
             'laravel-directory-cleanup.cleanup_policy',
-            \Spatie\DirectoryCleanup\Policies\Basic::class
+            \Spatie\DirectoryCleanup\Policies\DeleteEverything::class
         ));
     }
 }

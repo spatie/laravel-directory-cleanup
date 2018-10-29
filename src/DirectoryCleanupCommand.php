@@ -6,10 +6,8 @@ use Illuminate\Console\Command;
 
 class DirectoryCleanupCommand extends Command
 {
-    /** @var string */
     protected $signature = 'clean:directories';
 
-    /** @var string */
     protected $description = 'Clean up directories.';
 
     public function handle()

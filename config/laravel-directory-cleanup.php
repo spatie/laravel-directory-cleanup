@@ -2,13 +2,6 @@
 
 return [
 
-    /*
-     * A policy will determine if a given file should be deleted. This is the perfect
-     * place to apply custom rules (like only deleting files with a certain extension).
-     * A valid policy is any class that extends `Spatie\DirectoryCleanup\Policies\Policy`
-     */
-    'cleanup_policy' => \Spatie\DirectoryCleanup\Policies\Basic::class,
-
     'directories' => [
 
         /*
@@ -22,4 +15,14 @@ return [
         ],
         */
     ],
+
+    /*
+     * If a file is older than the amount of minutes specified, a cleanup policy will decide if that file
+     * should be deleted. By default every file that is older that the specified amount of minutes
+     * will be deleted.
+     *
+     * You can customize this behaviour by writing your own clean up policy.  A valid policy
+     * is any class that implements `Spatie\DirectoryCleanup\Policies\CleanupPolicy`.
+     */
+    'cleanup_policy' => \Spatie\DirectoryCleanup\Policies\DeleteEverything::class,
 ];

@@ -3,11 +3,11 @@
 namespace Spatie\DirectoryCleanup\Test;
 
 use Symfony\Component\Finder\SplFileInfo;
-use Spatie\DirectoryCleanup\Policies\Policy;
+use Spatie\DirectoryCleanup\Policies\CleanupPolicy;
 
-class CustomCleanupPolicy extends Policy
+class CustomCleanupCleanupPolicy implements CleanupPolicy
 {
-    public function allow(SplFileInfo $file) : bool
+    public function shouldDelete(SplFileInfo $file) : bool
     {
         $filesToKeep = ['keepThisFile.txt'];
 

@@ -6,9 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class DirectoryCleanupServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap the application services.
-     */
     public function boot()
     {
         $this->publishes([
@@ -16,9 +13,6 @@ class DirectoryCleanupServiceProvider extends ServiceProvider
         ], 'config');
     }
 
-    /**
-     * Register the application services.
-     */
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/laravel-directory-cleanup.php', 'laravel-directory-cleanup');
