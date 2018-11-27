@@ -2,8 +2,8 @@
 
 namespace Spatie\DirectoryCleanup;
 
-use Illuminate\Console\Command;
 use File;
+use Illuminate\Console\Command;
 
 class DirectoryCleanupCommand extends Command
 {
