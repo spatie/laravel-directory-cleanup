@@ -48,7 +48,7 @@ class DirectoryCleaner
     {
         return collect($this->filesystem->directories($this->directory))
             ->filter(function ($directory) {
-                return !$this->filesystem->allFiles($directory);
+                return ! $this->filesystem->allFiles($directory);
             })
             ->each(function ($directory) {
                 $this->filesystem->deleteDirectory($directory);
