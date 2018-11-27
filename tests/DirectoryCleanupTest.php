@@ -109,15 +109,15 @@ class DirectoryCleanupTest extends TestCase
     public function it_can_delete_empty_subdirectories()
     {
         $directories[$this->getTempDirectory('keepEmptySubdirs', true)] = [
-            'deleteAllOlderThanMinutes' => 3
+            'deleteAllOlderThanMinutes' => 3,
         ];
         $directories[$this->getTempDirectory('alsoKeepEmptySubdirs', true)] = [
             'deleteAllOlderThanMinutes' => 3,
-            'deleteEmptySubdirectories' => false
+            'deleteEmptySubdirectories' => false,
         ];
         $directories[$this->getTempDirectory('deleteEmptySubdirs', true)] = [
             'deleteAllOlderThanMinutes' => 3,
-            'deleteEmptySubdirectories' => true
+            'deleteEmptySubdirectories' => true,
         ];
 
         $this->app['config']->set('laravel-directory-cleanup', compact('directories', 'cleanup_policy'));
