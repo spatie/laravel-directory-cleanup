@@ -44,6 +44,17 @@ class DirectoryCleaner
             });
     }
 
+    public function deleteEmptySubdirectories() : Collection
+    {
+        return collect($this->filesystem->directories($this->directory))
+            ->filter(function ($directory) {
+                return !$this->filesystem->allFiles($directory);
+            })
+            ->each(function ($directory) {
+                $this->filesystem->deleteDirectory($directory);
+            });
+    }
+
     protected function policy() : CleanupPolicy
     {
         return resolve(config(

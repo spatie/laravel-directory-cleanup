@@ -18,6 +18,9 @@ class DirectoryCleanupCommand extends Command
 
         collect($directories)->each(function ($config, $directory) {
             $this->deleteFilesIfOlderThanMinutes($directory, $config['deleteAllOlderThanMinutes']);
+            if (!empty($config['deleteEmptySubdirectories'])) {
+                $this->deleteEmptySubdirectories($directory);
+            }
         });
 
         $this->comment('All done!');
@@ -30,5 +33,14 @@ class DirectoryCleanupCommand extends Command
             ->deleteFilesOlderThanMinutes($minutes);
 
         $this->info("Deleted {$deletedFiles->count()} file(s) from {$directory}.");
+    }
+
+    protected function deleteEmptySubdirectories(string $directory)
+    {
+        $deletedSubdirectories = app(DirectoryCleaner::class)
+            ->setDirectory($directory)
+            ->deleteEmptySubdirectories();
+
+        $this->info("Deleted {$deletedSubdirectories->count()} directory(ies) from {$directory}.");
     }
 }
