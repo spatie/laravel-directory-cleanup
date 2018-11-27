@@ -120,7 +120,7 @@ class DirectoryCleanupTest extends TestCase
             'deleteEmptySubdirectories' => true,
         ];
 
-        $this->app['config']->set('laravel-directory-cleanup', compact('directories', 'cleanup_policy'));
+        $this->app['config']->set('laravel-directory-cleanup', compact('directories'));
 
         foreach ($directories as $directory => $config) {
             $this->createDirectory("{$directory}/emptyDir");
