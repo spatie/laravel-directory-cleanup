@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-directory-cleanup` will be documented in this file
 
+## 1.2.1 - 2018-11-29
+
+- don't fail if a configured directory doesn't exist
+
 ## 1.2.0 - 2018-10-30
 
 - add cleanup policies
