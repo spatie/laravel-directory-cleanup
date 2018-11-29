@@ -105,6 +105,27 @@ class DirectoryCleanupTest extends TestCase
         }
     }
 
+    /** @test */
+    public function it_doesnt_fail_if_a_configured_dir_doesnt_exist()
+    {
+        $directories[$this->getTempDirectory('nodir', false)] = [
+            'deleteAllOlderThanMinutes' => 3,
+        ];
+
+        $existingDirectory = $this->getTempDirectory(1, true);
+        $directories[$existingDirectory] = [
+            'deleteAllOlderThanMinutes' => 3,
+        ];
+
+        $this->createFile("{$existingDirectory}/5MinutesOld.txt", 5);
+
+        $this->app['config']->set('laravel-directory-cleanup', compact('directories'));
+
+        $this->artisan('clean:directories');
+
+        $this->assertFileNotExists("{$existingDirectory}/5MinutesOld.txt");
+    }
+
     protected function createFile(string $fileName, int $ageInMinutes)
     {
         touch($fileName, Carbon::now()->subMinutes($ageInMinutes)->subSeconds(5)->timestamp);

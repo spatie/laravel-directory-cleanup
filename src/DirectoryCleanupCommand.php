@@ -2,6 +2,7 @@
 
 namespace Spatie\DirectoryCleanup;
 
+use File;
 use Illuminate\Console\Command;
 
 class DirectoryCleanupCommand extends Command
@@ -17,7 +18,9 @@ class DirectoryCleanupCommand extends Command
         $directories = collect(config('laravel-directory-cleanup.directories'));
 
         collect($directories)->each(function ($config, $directory) {
-            $this->deleteFilesIfOlderThanMinutes($directory, $config['deleteAllOlderThanMinutes']);
+            if (File::isDirectory($directory)) {
+                $this->deleteFilesIfOlderThanMinutes($directory, $config['deleteAllOlderThanMinutes']);
+            }
         });
 
         $this->comment('All done!');
