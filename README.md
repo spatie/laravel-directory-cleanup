@@ -66,7 +66,7 @@ return [
 
 Specify the directories that need cleaning in the config file.
 
-When running the console command `clean:directories` all files in the specified directories older then `deleteAllOlderThanMinutes` will be deleted.
+When running the console command `clean:directories` all files in the specified directories older then `deleteAllOlderThanMinutes` will be deleted. Empty subdirectories will also be deleted.
 
 This command can be scheduled in Laravel's console kernel.
 
