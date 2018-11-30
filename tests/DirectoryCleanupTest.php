@@ -126,12 +126,37 @@ class DirectoryCleanupTest extends TestCase
         $this->assertFileNotExists("{$existingDirectory}/5MinutesOld.txt");
     }
 
+    /** @test */
+    public function it_can_delete_empty_subdirectories()
+    {
+        $directories[$this->getTempDirectory('deleteEmptySubdirs', true)] = [
+            'deleteAllOlderThanMinutes' => 3,
+            'deleteEmptySubdirectories' => true,
+        ];
+
+        $this->app['config']->set('laravel-directory-cleanup', compact('directories'));
+
+        foreach ($directories as $directory => $config) {
+            $this->createDirectory("{$directory}/emptyDir");
+            $this->createFile("{$directory}/emptyDir/5MinutesOld.txt", 5);
+            $this->createDirectory("{$directory}/notEmptyDir");
+            $this->createFile("{$directory}/notEmptyDir/1MinutesOld.txt", 1);
+        }
+
+        $this->artisan('clean:directories');
+
+        foreach ($directories as $directory => $config) {
+            $this->assertDirectoryExists("{$directory}/notEmptyDir");
+            $this->assertDirectoryNotExists("{$directory}/emptyDir");
+        }
+    }
+
     protected function createFile(string $fileName, int $ageInMinutes)
     {
         touch($fileName, Carbon::now()->subMinutes($ageInMinutes)->subSeconds(5)->timestamp);
     }
 
-    protected function createDirectory(string $fileName, int $ageInMinutes)
+    protected function createDirectory(string $fileName)
     {
         mkdir($fileName);
     }
