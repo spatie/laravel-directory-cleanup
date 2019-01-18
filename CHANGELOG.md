@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-directory-cleanup` will be documented in this file
 
+## 1.2.3 - 2019-01-18
+
+- fixes for handling hidden files
+
 ## 1.2.2 - 2018-11-30
 
 - empty subdirectories will be deleted as well
