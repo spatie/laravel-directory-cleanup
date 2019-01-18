@@ -31,7 +31,7 @@ class DirectoryCleaner
     {
         $timeInPast = Carbon::now()->subMinutes($minutes);
 
-        return collect($this->filesystem->allFiles($this->directory))
+        return collect($this->filesystem->allFiles($this->directory, true))
             ->filter(function ($file) use ($timeInPast) {
                 return Carbon::createFromTimestamp(filemtime($file))
                     ->lt($timeInPast);
@@ -48,7 +48,7 @@ class DirectoryCleaner
     {
         return collect($this->filesystem->directories($this->directory))
             ->filter(function ($directory) {
-                return ! $this->filesystem->allFiles($directory);
+                return ! $this->filesystem->allFiles($directory, true);
             })
             ->each(function ($directory) {
                 $this->filesystem->deleteDirectory($directory);
