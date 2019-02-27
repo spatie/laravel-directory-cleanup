@@ -6,11 +6,6 @@ use Carbon\Carbon;
 
 class DirectoryCleanupTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     /** @test */
     public function it_can_cleanup_the_directories_specified_in_the_config_file()
     {

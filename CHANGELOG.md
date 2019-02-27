@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-directory-cleanup` will be documented in this file
 
+## 1.2.4 - 2019-01-27
+
+- add support for Laravel 5.8
+
 ## 1.2.3 - 2019-01-18
 
 - fixes for handling hidden files

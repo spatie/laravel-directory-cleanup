@@ -8,7 +8,7 @@ use Spatie\DirectoryCleanup\DirectoryCleanupServiceProvider;
 
 class TestCase extends OrchestraTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
