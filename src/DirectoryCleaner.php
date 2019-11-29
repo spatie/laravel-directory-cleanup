@@ -61,14 +61,15 @@ class DirectoryCleaner
             ->each(function ($file) {
                 $this->filesystem->delete($file);
             });
-        return ($amountOfFilesDeleted + $files->count());
+
+        return $amountOfFilesDeleted + $files->count();
     }
 
     public function deleteEmptySubdirectories(): Collection
     {
         return collect($this->filesystem->directories($this->directory))
             ->filter(function ($directory) {
-                return !$this->filesystem->allFiles($directory, true);
+                return ! $this->filesystem->allFiles($directory, true);
             })
             ->each(function ($directory) {
                 $this->filesystem->deleteDirectory($directory);
