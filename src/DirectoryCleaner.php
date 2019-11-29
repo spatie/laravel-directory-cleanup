@@ -3,8 +3,8 @@
 namespace Spatie\DirectoryCleanup;
 
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
 use Spatie\DirectoryCleanup\Policies\CleanupPolicy;
 
 class DirectoryCleaner
@@ -14,6 +14,9 @@ class DirectoryCleaner
 
     /** @var string */
     protected $directory;
+
+    /** @var Carbon */
+    protected $timeInPast;
 
     public function __construct(Filesystem $filesystem)
     {
@@ -27,14 +30,30 @@ class DirectoryCleaner
         return $this;
     }
 
-    public function deleteFilesOlderThanMinutes(int $minutes) : Collection
+    public function setMinutes($minutes)
     {
-        $timeInPast = Carbon::now()->subMinutes($minutes);
+        $this->timeInPast = Carbon::now()->subMinutes($minutes);
 
-        return collect($this->filesystem->allFiles($this->directory, true))
-            ->filter(function ($file) use ($timeInPast) {
+        return $this;
+    }
+
+    public function deleteFilesOlderThanMinutes($amountOfFilesDeleted = 0, $directory = ''): int
+    {
+        if ($directory === '') { // Empty directory given - lets take the default folder, and all sub directories.
+            $directory = realpath($this->directory);
+            $directories = collect(array_merge($this->filesystem->directories($directory), [$directory]));
+        } else {
+            $directories = collect($this->filesystem->directories($directory));
+        }
+
+        foreach ($directories as $subDirectory) {
+            $amountOfFilesDeleted = $this->deleteFilesOlderThanMinutes($amountOfFilesDeleted, $subDirectory);
+        }
+
+        $files = collect($this->filesystem->files($directory, true))
+            ->filter(function ($file) {
                 return Carbon::createFromTimestamp(filemtime($file))
-                    ->lt($timeInPast);
+                    ->lt($this->timeInPast);
             })
             ->filter(function ($file) {
                 return $this->policy()->shouldDelete($file);
@@ -42,20 +61,21 @@ class DirectoryCleaner
             ->each(function ($file) {
                 $this->filesystem->delete($file);
             });
+        return ($amountOfFilesDeleted + $files->count());
     }
 
-    public function deleteEmptySubdirectories() : Collection
+    public function deleteEmptySubdirectories(): Collection
     {
         return collect($this->filesystem->directories($this->directory))
             ->filter(function ($directory) {
-                return ! $this->filesystem->allFiles($directory, true);
+                return !$this->filesystem->allFiles($directory, true);
             })
             ->each(function ($directory) {
                 $this->filesystem->deleteDirectory($directory);
             });
     }
 
-    protected function policy() : CleanupPolicy
+    protected function policy(): CleanupPolicy
     {
         return resolve(config(
             'laravel-directory-cleanup.cleanup_policy',

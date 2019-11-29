@@ -31,9 +31,10 @@ class DirectoryCleanupCommand extends Command
     {
         $deletedFiles = app(DirectoryCleaner::class)
             ->setDirectory($directory)
+            ->setMinutes($minutes)
             ->deleteFilesOlderThanMinutes($minutes);
 
-        $this->info("Deleted {$deletedFiles->count()} file(s) from {$directory}.");
+        $this->info("Deleted {$deletedFiles} file(s) from {$directory}.");
     }
 
     protected function deleteEmptySubdirectories(string $directory)
