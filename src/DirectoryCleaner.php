@@ -37,20 +37,19 @@ class DirectoryCleaner
         return $this;
     }
 
-    public function deleteFilesOlderThanMinutes($amountOfFilesDeleted = 0, $directory = ''): int
+    public function deleteFilesOlderThanMinutes($amountOfFilesDeleted = 0, $directory = null): int
     {
-        if ($directory === '') { // Empty directory given - lets take the default folder, and all sub directories.
-            $directory = realpath($this->directory);
-            $directories = collect(array_merge($this->filesystem->directories($directory), [$directory]));
-        } else {
-            $directories = collect($this->filesystem->directories($directory));
+        $workingDir = $directory ?: realpath($this->directory);
+        $directories = collect($this->filesystem->directories($workingDir));
+        if ($directory === null) {
+            $directories = $directories->add($workingDir);
         }
 
         foreach ($directories as $subDirectory) {
             $amountOfFilesDeleted = $this->deleteFilesOlderThanMinutes($amountOfFilesDeleted, $subDirectory);
         }
 
-        $files = collect($this->filesystem->files($directory, true))
+        $files = collect($this->filesystem->files($workingDir, true))
             ->filter(function ($file) {
                 return Carbon::createFromTimestamp(filemtime($file))
                     ->lt($this->timeInPast);
@@ -69,7 +68,7 @@ class DirectoryCleaner
     {
         return collect($this->filesystem->directories($this->directory))
             ->filter(function ($directory) {
-                return ! $this->filesystem->allFiles($directory, true);
+                return !$this->filesystem->allFiles($directory, true);
             })
             ->each(function ($directory) {
                 $this->filesystem->deleteDirectory($directory);
