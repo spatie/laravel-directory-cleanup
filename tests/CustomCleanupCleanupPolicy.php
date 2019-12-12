@@ -2,8 +2,8 @@
 
 namespace Spatie\DirectoryCleanup\Test;
 
-use Symfony\Component\Finder\SplFileInfo;
 use Spatie\DirectoryCleanup\Policies\CleanupPolicy;
+use Symfony\Component\Finder\SplFileInfo;
 
 class CustomCleanupCleanupPolicy implements CleanupPolicy
 {
