@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-directory-cleanup` will be documented in this file
 
+## 1.4.1 - 2019-12-12
+
+- performance improvements (#34)
+
 ## 1.4.0 - 2019-09-04
 
 - add support for Laravel 6
