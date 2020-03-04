@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-directory-cleanup` will be documented in this file
 
+## 1.5.0 - 2020-03-03
+
+- add support for Laravel 7
+
 ## 1.4.1 - 2019-12-12
 
 - performance improvements (#34)
