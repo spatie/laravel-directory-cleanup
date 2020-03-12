@@ -32,7 +32,7 @@ class DirectoryCleanupCommand extends Command
         $deletedFiles = app(DirectoryCleaner::class)
             ->setDirectory($directory)
             ->setMinutes($minutes)
-            ->deleteFilesOlderThanMinutes($minutes);
+            ->deleteFilesOlderThanMinutes();
 
         $this->info("Deleted {$deletedFiles} file(s) from {$directory}.");
     }
