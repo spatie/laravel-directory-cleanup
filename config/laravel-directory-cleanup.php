@@ -18,10 +18,10 @@ return [
 
     /*
      * If a file is older than the amount of minutes specified, a cleanup policy will decide if that file
-     * should be deleted. By default every file that is older that the specified amount of minutes
+     * should be deleted. By default every file that is older than the specified amount of minutes
      * will be deleted.
      *
-     * You can customize this behaviour by writing your own clean up policy.  A valid policy
+     * You can customize this behaviour by writing your own clean up policy. A valid policy
      * is any class that implements `Spatie\DirectoryCleanup\Policies\CleanupPolicy`.
      */
     'cleanup_policy' => \Spatie\DirectoryCleanup\Policies\DeleteEverything::class,
