@@ -11,7 +11,7 @@ This package will delete old files from directories. You can use a configuration
 
 ## Support us
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us). 
+We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
 
 We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
 
@@ -58,9 +58,9 @@ return [
 
     /*
      * If a file is older than the amount of minutes specified, a cleanup policy will decide if that file
-     * should be deleted. By default every file that is older that the specified amount of minutes
+     * should be deleted. By default every file that is older than the specified amount of minutes
      * will be deleted.
-     * 
+     *
      * You can customize this behaviour by writing your own clean up policy.  A valid policy
      * is any class that implements `Spatie\DirectoryCleanup\Policies\CleanupPolicy`.
      */
@@ -72,7 +72,7 @@ return [
 
 Specify the directories that need cleaning in the config file.
 
-When running the console command `clean:directories` all files in the specified directories older then `deleteAllOlderThanMinutes` will be deleted. Empty subdirectories will also be deleted.
+When running the console command `clean:directories` all files in the specified directories older than `deleteAllOlderThanMinutes` will be deleted. Empty subdirectories will also be deleted.
 
 This command can be scheduled in Laravel's console kernel.
 
@@ -112,7 +112,7 @@ class MyPolicy implements CleanupPolicy
 
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
 ## Testing
 
