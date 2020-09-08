@@ -2,9 +2,8 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-directory-cleanup.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-directory-cleanup)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/spatie/laravel-directory-cleanup/run-tests?label=tests)
-[![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-directory-cleanup.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-directory-cleanup)
-[![StyleCI](https://styleci.io/repos/57290433/shield?branch=master)](https://styleci.io/repos/57290433)
+![Test Status](https://img.shields.io/github/workflow/status/spatie/laravel-directory-cleanup/run-tests?label=tests)
+![PHP CS Fixer Status](https://img.shields.io/github/workflow/status/spatie/laravel-directory-cleanup/php-cs-fixer?label=style)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-directory-cleanup.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-directory-cleanup)
 
 This package will delete old files from directories. You can use a configuration file to specify the maximum age of a file in a certain directory.
