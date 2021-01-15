@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-directory-cleanup` will be documented in this file
 
+## 1.8.0 - 2021-01-15
+
+- allow all PHP 8 versions
+
 ## 1.7.0 - 2020-12-02
 
 - add support for PHP 8
