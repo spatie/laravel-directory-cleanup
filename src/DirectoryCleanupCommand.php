@@ -19,7 +19,7 @@ class DirectoryCleanupCommand extends Command
 
         collect($directories)->each(function ($config, $directory) {
             if (File::isDirectory($directory)) {
-                $this->deleteFilesIfOlderThanMinutes($directory, $config['deleteAllOlderThanMinutes']);
+                $this->deleteFilesIfOlderThanMinutes($directory, $config['deleteAllOlderThanMinutes'],$config['extensions']);
                 $this->deleteEmptySubdirectories($directory);
             }
         });
@@ -27,11 +27,12 @@ class DirectoryCleanupCommand extends Command
         $this->comment('All done!');
     }
 
-    protected function deleteFilesIfOlderThanMinutes(string $directory, int $minutes)
+    protected function deleteFilesIfOlderThanMinutes(string $directory, int $minutes,$ext = null)
     {
         $deletedFiles = app(DirectoryCleaner::class)
             ->setDirectory($directory)
             ->setMinutes($minutes)
+            ->setExtensions($ext)
             ->deleteFilesOlderThanMinutes();
 
         $this->info("Deleted {$deletedFiles} file(s) from {$directory}.");

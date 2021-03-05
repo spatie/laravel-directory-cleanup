@@ -15,6 +15,9 @@ class DirectoryCleaner
     /** @var string */
     protected $directory;
 
+    /** @var array */
+    protected $extensions;
+
     /** @var Carbon */
     protected $timeInPast;
 
@@ -27,6 +30,14 @@ class DirectoryCleaner
     {
         $this->directory = $directory;
 
+        return $this;
+    }
+
+    public function setExtensions(string $extensions)
+    {
+        if ($extensions && $extensions != "*"){
+            $this->extensions = explode(",",$extensions);
+        }
         return $this;
     }
 
@@ -58,7 +69,13 @@ class DirectoryCleaner
                 return $this->policy()->shouldDelete($file);
             })
             ->each(function ($file) {
-                $this->filesystem->delete($file);
+                if ($this->extensions){
+                    if (in_array($file->getExtension(),$this->extensions)){
+                        $this->filesystem->delete($file);
+                    }
+                }else{
+                    $this->filesystem->delete($file);
+                }
             });
 
         return $amountOfFilesDeleted + $files->count();
