@@ -53,6 +53,7 @@ return [
         /*
         'path/to/a/directory' => [
             'deleteAllOlderThanMinutes' => 60 * 24,
+            'extensions' => "*" // "*"|"png,jpg"
         ],
         */
     ],
