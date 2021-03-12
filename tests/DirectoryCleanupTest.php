@@ -7,6 +7,138 @@ use Carbon\Carbon;
 class DirectoryCleanupTest extends TestCase
 {
     /** @test */
+    public function it_can_cleanup_the_directories_specified_all_extention_in_the_config_file()
+    {
+        $numberOfDirectories = 5;
+
+        $directories = [];
+
+        foreach (range(1, $numberOfDirectories) as $ageInMinutes) {
+            $directories[$this->getTempDirectory($ageInMinutes, true)] = [
+                'deleteAllOlderThanMinutes' => $ageInMinutes,
+                "extensions" => "*"
+            ];
+        }
+
+        $this->app['config']->set('laravel-directory-cleanup', compact('directories'));
+
+        foreach ($directories as $directory => $config) {
+            foreach (range(1, $numberOfDirectories) as $ageInMinutes) {
+                $this->createFile("{$directory}/{$ageInMinutes}MinutesOld.txt", $ageInMinutes);
+                $this->createFile("{$directory}/.{$ageInMinutes}MinutesOld.txt", $ageInMinutes);
+                $this->createFile("{$directory}/{$ageInMinutes}MinutesOld.tmp", $ageInMinutes);
+                $this->createFile("{$directory}/.{$ageInMinutes}MinutesOld.tmp", $ageInMinutes);
+            }
+        }
+
+        $this->artisan('clean:directories');
+
+        foreach ($directories as $directory => $config) {
+            foreach (range(1, $numberOfDirectories) as $ageInMinutes) {
+                if ($ageInMinutes < $config['deleteAllOlderThanMinutes']) {
+                    $this->assertFileExists("{$directory}/{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileExists("{$directory}/.{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileExists("{$directory}/{$ageInMinutes}MinutesOld.tmp");
+                    $this->assertFileExists("{$directory}/.{$ageInMinutes}MinutesOld.tmp");
+                } else {
+                    $this->assertFileDoesNotExist("{$directory}/{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileDoesNotExist("{$directory}/.{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileDoesNotExist("{$directory}/{$ageInMinutes}MinutesOld.tmp");
+                    $this->assertFileDoesNotExist("{$directory}/.{$ageInMinutes}MinutesOld.tmp");
+                }
+            }
+        }
+    }
+
+    /** @test */
+    public function it_can_cleanup_the_directories_specified_extentions_in_the_config_file()
+    {
+        $numberOfDirectories = 5;
+
+        $directories = [];
+
+        foreach (range(1, $numberOfDirectories) as $ageInMinutes) {
+            $directories[$this->getTempDirectory($ageInMinutes, true)] = [
+                'deleteAllOlderThanMinutes' => $ageInMinutes,
+                "extensions" => "txt,tmp"
+            ];
+        }
+
+        $this->app['config']->set('laravel-directory-cleanup', compact('directories'));
+
+        foreach ($directories as $directory => $config) {
+            foreach (range(1, $numberOfDirectories) as $ageInMinutes) {
+                $this->createFile("{$directory}/{$ageInMinutes}MinutesOld.txt", $ageInMinutes);
+                $this->createFile("{$directory}/.{$ageInMinutes}MinutesOld.txt", $ageInMinutes);
+                $this->createFile("{$directory}/{$ageInMinutes}MinutesOld.tmp", $ageInMinutes);
+                $this->createFile("{$directory}/.{$ageInMinutes}MinutesOld.tmp", $ageInMinutes);
+            }
+        }
+
+        $this->artisan('clean:directories');
+
+        foreach ($directories as $directory => $config) {
+            foreach (range(1, $numberOfDirectories) as $ageInMinutes) {
+                if ($ageInMinutes < $config['deleteAllOlderThanMinutes']) {
+                    $this->assertFileExists("{$directory}/{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileExists("{$directory}/.{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileExists("{$directory}/{$ageInMinutes}MinutesOld.tmp");
+                    $this->assertFileExists("{$directory}/.{$ageInMinutes}MinutesOld.tmp");
+                } else {
+                    $this->assertFileDoesNotExist("{$directory}/{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileDoesNotExist("{$directory}/.{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileDoesNotExist("{$directory}/{$ageInMinutes}MinutesOld.tmp");
+                    $this->assertFileDoesNotExist("{$directory}/.{$ageInMinutes}MinutesOld.tmp");
+                }
+            }
+        }
+    }
+
+    /** @test */
+    public function it_can_cleanup_the_directories_specified_extention_in_the_config_file()
+    {
+        $numberOfDirectories = 5;
+
+        $directories = [];
+
+        foreach (range(1, $numberOfDirectories) as $ageInMinutes) {
+            $directories[$this->getTempDirectory($ageInMinutes, true)] = [
+                'deleteAllOlderThanMinutes' => $ageInMinutes,
+                "extensions" => "txt"
+            ];
+        }
+
+        $this->app['config']->set('laravel-directory-cleanup', compact('directories'));
+
+        foreach ($directories as $directory => $config) {
+            foreach (range(1, $numberOfDirectories) as $ageInMinutes) {
+                $this->createFile("{$directory}/{$ageInMinutes}MinutesOld.txt", $ageInMinutes);
+                $this->createFile("{$directory}/.{$ageInMinutes}MinutesOld.txt", $ageInMinutes);
+                $this->createFile("{$directory}/{$ageInMinutes}MinutesOld.tmp", $ageInMinutes);
+                $this->createFile("{$directory}/.{$ageInMinutes}MinutesOld.tmp", $ageInMinutes);
+            }
+        }
+
+        $this->artisan('clean:directories');
+
+        foreach ($directories as $directory => $config) {
+            foreach (range(1, $numberOfDirectories) as $ageInMinutes) {
+                if ($ageInMinutes < $config['deleteAllOlderThanMinutes']) {
+                    $this->assertFileExists("{$directory}/{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileExists("{$directory}/.{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileExists("{$directory}/{$ageInMinutes}MinutesOld.tmp");
+                    $this->assertFileExists("{$directory}/.{$ageInMinutes}MinutesOld.tmp");
+                } else {
+                    $this->assertFileDoesNotExist("{$directory}/{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileDoesNotExist("{$directory}/.{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileExists("{$directory}/{$ageInMinutes}MinutesOld.tmp");
+                    $this->assertFileExists("{$directory}/.{$ageInMinutes}MinutesOld.tmp");
+                }
+            }
+        }
+    }
+
+    /** @test */
     public function it_can_cleanup_the_directories_specified_in_the_config_file()
     {
         $numberOfDirectories = 5;
@@ -34,8 +166,8 @@ class DirectoryCleanupTest extends TestCase
                     $this->assertFileExists("{$directory}/{$ageInMinutes}MinutesOld.txt");
                     $this->assertFileExists("{$directory}/.{$ageInMinutes}MinutesOld.txt");
                 } else {
-                    $this->assertFileNotExists("{$directory}/{$ageInMinutes}MinutesOld.txt");
-                    $this->assertFileNotExists("{$directory}/.{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileDoesNotExist("{$directory}/{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileDoesNotExist("{$directory}/.{$ageInMinutes}MinutesOld.txt");
                 }
             }
         }
@@ -73,8 +205,8 @@ class DirectoryCleanupTest extends TestCase
                         $this->assertFileExists("{$path}/{$ageInMinutes}MinutesOld.txt");
                         $this->assertFileExists("{$path}/.{$ageInMinutes}MinutesOld.txt");
                     } else {
-                        $this->assertFileNotExists("{$path}/{$ageInMinutes}MinutesOld.txt");
-                        $this->assertFileNotExists("{$path}/.{$ageInMinutes}MinutesOld.txt");
+                        $this->assertFileDoesNotExist("{$path}/{$ageInMinutes}MinutesOld.txt");
+                        $this->assertFileDoesNotExist("{$path}/.{$ageInMinutes}MinutesOld.txt");
                     }
                 }
                 $path .= "{$level}/";
@@ -102,7 +234,7 @@ class DirectoryCleanupTest extends TestCase
 
         foreach ($directories as $directory => $config) {
             $this->assertFileExists("{$directory}/keepThisFile.txt");
-            $this->assertFileNotExists("{$directory}/removeThisFile.txt");
+            $this->assertFileDoesNotExist("{$directory}/removeThisFile.txt");
         }
     }
 
@@ -124,7 +256,7 @@ class DirectoryCleanupTest extends TestCase
 
         $this->artisan('clean:directories');
 
-        $this->assertFileNotExists("{$existingDirectory}/5MinutesOld.txt");
+        $this->assertFileDoesNotExist("{$existingDirectory}/5MinutesOld.txt");
     }
 
     /** @test */
@@ -152,9 +284,9 @@ class DirectoryCleanupTest extends TestCase
 
         foreach ($directories as $directory => $config) {
             $this->assertDirectoryExists("{$directory}/notEmptyDir");
-            $this->assertDirectoryNotExists("{$directory}/emptyDir");
+            $this->assertDirectoryDoesNotExist("{$directory}/emptyDir");
             $this->assertDirectoryExists("{$directory}/notEmptyDirWithHiddenFile");
-            $this->assertDirectoryNotExists("{$directory}/emptyDirWithHiddenFile");
+            $this->assertDirectoryDoesNotExist("{$directory}/emptyDirWithHiddenFile");
         }
     }
 
