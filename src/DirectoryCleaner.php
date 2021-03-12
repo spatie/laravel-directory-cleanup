@@ -69,11 +69,7 @@ class DirectoryCleaner
                 return $this->policy()->shouldDelete($file);
             })
             ->each(function ($file) {
-                if ($this->extensions){
-                    if (in_array($file->getExtension(),$this->extensions)){
-                        $this->filesystem->delete($file);
-                    }
-                }else{
+                if ($this->shouldDelete($file)){
                     $this->filesystem->delete($file);
                 }
             });
@@ -90,6 +86,13 @@ class DirectoryCleaner
             ->each(function ($directory) {
                 $this->filesystem->deleteDirectory($directory);
             });
+    }
+
+    protected function shouldDelete($file){
+        if ($this->extensions){
+            return in_array($file->getExtension(),$this->extensions);
+        }
+        return true;
     }
 
     protected function policy(): CleanupPolicy

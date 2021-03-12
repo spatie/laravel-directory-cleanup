@@ -6,7 +6,9 @@ return [
 
         /*
          * Here you can specify which directories need to be cleanup. All files older than
-         * the specified amount of minutes will be deleted.
+         * the specified amount of minutes or has extension matching was configured will be deleted.
+         * You can use "*" or remove config `extensions` if you want clean all files
+         * If you want clean mutiple extensions, sperate them by `,` E.g: "png,jpg"
          */
 
         /*
