@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-directory-cleanup` will be documented in this file
 
+## 1.9.0 - 2022-01-13
+
+- support Laravel 9
+
 ## 1.8.0 - 2021-01-15
 
 - allow all PHP 8 versions
