@@ -3,6 +3,7 @@
 namespace Spatie\DirectoryCleanup\Test;
 
 use Carbon\Carbon;
+use Spatie\DirectoryCleanup\Policies\DeleteEverything;
 
 class DirectoryCleanupTest extends TestCase
 {
@@ -34,8 +35,8 @@ class DirectoryCleanupTest extends TestCase
                     $this->assertFileExists("{$directory}/{$ageInMinutes}MinutesOld.txt");
                     $this->assertFileExists("{$directory}/.{$ageInMinutes}MinutesOld.txt");
                 } else {
-                    $this->assertFileNotExists("{$directory}/{$ageInMinutes}MinutesOld.txt");
-                    $this->assertFileNotExists("{$directory}/.{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileDoesNotExist("{$directory}/{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileDoesNotExist("{$directory}/.{$ageInMinutes}MinutesOld.txt");
                 }
             }
         }
@@ -73,8 +74,8 @@ class DirectoryCleanupTest extends TestCase
                         $this->assertFileExists("{$path}/{$ageInMinutes}MinutesOld.txt");
                         $this->assertFileExists("{$path}/.{$ageInMinutes}MinutesOld.txt");
                     } else {
-                        $this->assertFileNotExists("{$path}/{$ageInMinutes}MinutesOld.txt");
-                        $this->assertFileNotExists("{$path}/.{$ageInMinutes}MinutesOld.txt");
+                        $this->assertFileDoesNotExist("{$path}/{$ageInMinutes}MinutesOld.txt");
+                        $this->assertFileDoesNotExist("{$path}/.{$ageInMinutes}MinutesOld.txt");
                     }
                 }
                 $path .= "{$level}/";
@@ -102,8 +103,39 @@ class DirectoryCleanupTest extends TestCase
 
         foreach ($directories as $directory => $config) {
             $this->assertFileExists("{$directory}/keepThisFile.txt");
-            $this->assertFileNotExists("{$directory}/removeThisFile.txt");
+            $this->assertFileDoesNotExist("{$directory}/removeThisFile.txt");
         }
+    }
+
+    /** @test */
+    public function it_can_cleanup_directory_with_custom_policy_for_each_directory()
+    {
+        $firstDirectory = $this->getTempDirectory(1, true);
+        $secondDirectory = $this->getTempDirectory(2, true);
+
+        $this->app['config']->set('laravel-directory-cleanup.directories', [
+            $firstDirectory => [
+                'deleteAllOlderThanMinutes' => 5,
+                'cleanup_policy' => CustomCleanupCleanupPolicy::class
+            ],
+            $secondDirectory => [
+                'deleteAllOlderThanMinutes' => 5,
+                'cleanup_policy' => DeleteEverything::class
+            ]
+        ]);
+
+        foreach ([$firstDirectory, $secondDirectory] as $directory) {
+            $this->createFile("{$directory}/keepThisFile.txt", 5);
+            $this->createFile("{$directory}/removeThisFile.txt", 5);
+        }
+
+        $this->artisan('clean:directories');
+
+        $this->assertFileExists("{$firstDirectory}/keepThisFile.txt");
+        $this->assertFileDoesNotExist("{$firstDirectory}/removeThisFile.txt");
+
+        $this->assertFileDoesNotExist("{$secondDirectory}/keepThisFile.txt");
+        $this->assertFileDoesNotExist("{$secondDirectory}/removeThisFile.txt");
     }
 
     /** @test */
@@ -124,7 +156,7 @@ class DirectoryCleanupTest extends TestCase
 
         $this->artisan('clean:directories');
 
-        $this->assertFileNotExists("{$existingDirectory}/5MinutesOld.txt");
+        $this->assertFileDoesNotExist("{$existingDirectory}/5MinutesOld.txt");
     }
 
     /** @test */
@@ -152,9 +184,9 @@ class DirectoryCleanupTest extends TestCase
 
         foreach ($directories as $directory => $config) {
             $this->assertDirectoryExists("{$directory}/notEmptyDir");
-            $this->assertDirectoryNotExists("{$directory}/emptyDir");
+            $this->assertDirectoryDoesNotExist("{$directory}/emptyDir");
             $this->assertDirectoryExists("{$directory}/notEmptyDirWithHiddenFile");
-            $this->assertDirectoryNotExists("{$directory}/emptyDirWithHiddenFile");
+            $this->assertDirectoryDoesNotExist("{$directory}/emptyDirWithHiddenFile");
         }
     }
 

@@ -4,6 +4,9 @@ namespace Spatie\DirectoryCleanup;
 
 use File;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
+use Spatie\DirectoryCleanup\Policies\CleanupPolicy;
+use Spatie\DirectoryCleanup\Policies\DeleteEverything;
 
 class DirectoryCleanupCommand extends Command
 {
@@ -17,9 +20,17 @@ class DirectoryCleanupCommand extends Command
 
         $directories = collect(config('laravel-directory-cleanup.directories'));
 
-        collect($directories)->each(function ($config, $directory) {
+        $defaultPolicy = config('laravel-directory-cleanup.cleanup_policy', DeleteEverything::class);
+
+        collect($directories)->each(function ($config, $directory) use ($defaultPolicy) {
             if (File::isDirectory($directory)) {
-                $this->deleteFilesIfOlderThanMinutes($directory, $config['deleteAllOlderThanMinutes']);
+                $policy = Arr::get($config, 'cleanup_policy', $defaultPolicy);
+
+                $this->deleteFilesIfOlderThanMinutes(
+                    $directory,
+                    $config['deleteAllOlderThanMinutes'],
+                    resolve($policy)
+                );
                 $this->deleteEmptySubdirectories($directory);
             }
         });
@@ -27,11 +38,12 @@ class DirectoryCleanupCommand extends Command
         $this->comment('All done!');
     }
 
-    protected function deleteFilesIfOlderThanMinutes(string $directory, int $minutes)
+    protected function deleteFilesIfOlderThanMinutes(string $directory, int $minutes, CleanupPolicy $policy)
     {
         $deletedFiles = app(DirectoryCleaner::class)
             ->setDirectory($directory)
             ->setMinutes($minutes)
+            ->setPolicy($policy)
             ->deleteFilesOlderThanMinutes();
 
         $this->info("Deleted {$deletedFiles} file(s) from {$directory}.");

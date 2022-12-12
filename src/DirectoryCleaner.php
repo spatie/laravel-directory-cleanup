@@ -18,9 +18,13 @@ class DirectoryCleaner
     /** @var Carbon */
     protected $timeInPast;
 
-    public function __construct(Filesystem $filesystem)
+    /** @var CleanupPolicy */
+    protected $policy;
+
+    public function __construct(Filesystem $filesystem, CleanupPolicy $policy)
     {
         $this->filesystem = $filesystem;
+        $this->policy = $policy;
     }
 
     public function setDirectory(string $directory)
@@ -33,6 +37,13 @@ class DirectoryCleaner
     public function setMinutes($minutes)
     {
         $this->timeInPast = Carbon::now()->subMinutes($minutes);
+
+        return $this;
+    }
+
+    public function setPolicy(CleanupPolicy $policy)
+    {
+        $this->policy = $policy;
 
         return $this;
     }
@@ -55,7 +66,7 @@ class DirectoryCleaner
                     ->lt($this->timeInPast);
             })
             ->filter(function ($file) {
-                return $this->policy()->shouldDelete($file);
+                return $this->getPolicy()->shouldDelete($file);
             })
             ->each(function ($file) {
                 $this->filesystem->delete($file);
@@ -75,11 +86,8 @@ class DirectoryCleaner
             });
     }
 
-    protected function policy(): CleanupPolicy
+    protected function getPolicy(): CleanupPolicy
     {
-        return resolve(config(
-            'laravel-directory-cleanup.cleanup_policy',
-            \Spatie\DirectoryCleanup\Policies\DeleteEverything::class
-        ));
+        return $this->policy;
     }
 }

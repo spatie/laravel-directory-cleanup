@@ -43,7 +43,7 @@ php artisan vendor:publish --provider="Spatie\DirectoryCleanup\DirectoryCleanupS
 ```
 This is the content of the published config file `laravel-directory-cleanup`
 
-```
+```php
 return [
 
     'directories' => [
@@ -113,6 +113,24 @@ class MyPolicy implements CleanupPolicy
     }
 }
 ```
+
+You can use that policy per directory as well.
+
+```php
+// config/laravel-directory-cleanup.php
+return [
+    ...
+    'directories' => [
+        'path/to/a/directory' => [
+            'deleteAllOlderThanMinutes' => 60 * 24,
+            'cleanup_policy' => MyPolicy::class
+        ],
+    ]
+    ...
+];
+```
+
+If you don't have a policy defined per directory, package will use the default one.
 
 ## Changelog
 
