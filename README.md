@@ -130,7 +130,7 @@ return [
 ];
 ```
 
-If you don't have a policy defined per directory, package will use the default one.
+If you don't have any policy defined per directory, the package will use the default one.
 
 ## Changelog
 
