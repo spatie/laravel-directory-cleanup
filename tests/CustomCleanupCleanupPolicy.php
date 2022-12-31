@@ -7,7 +7,7 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class CustomCleanupCleanupPolicy implements CleanupPolicy
 {
-    public function shouldDelete(SplFileInfo $file) : bool
+    public function shouldDelete(SplFileInfo $file): bool
     {
         $filesToKeep = ['keepThisFile.txt'];
 

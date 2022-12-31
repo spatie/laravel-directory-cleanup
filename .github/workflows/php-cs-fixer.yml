@@ -1,24 +1,17 @@
 name: Check & fix styling
 
-on: [push]
+on: [ push ]
 
 jobs:
-    php-cs-fixer:
+    style:
         runs-on: ubuntu-latest
-
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
-              with:
-                  ref: ${{ github.head_ref }}
-
-            - name: Run PHP CS Fixer
-              uses: docker://oskarstark/php-cs-fixer-ga
-              with:
-                  args: --config=.php_cs.dist --allow-risky=yes
-
-            - name: Commit changes
-              uses: stefanzweifel/git-auto-commit-action@v4
-              with:
-                  commit_message: Fix styling
-
+            -   name: Git checkout
+                uses: actions/checkout@v2
+            -   name: Install Dependencies
+                run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+            -   name: normalize php
+                run: php vendor/bin/phpcbf
+            -   uses: stefanzweifel/git-auto-commit-action@v4.0.0
+                with:
+                    commit_message: Fix formatting with phpcbf
