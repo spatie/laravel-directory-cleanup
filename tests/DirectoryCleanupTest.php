@@ -34,8 +34,8 @@ class DirectoryCleanupTest extends TestCase
                     $this->assertFileExists("{$directory}/{$ageInMinutes}MinutesOld.txt");
                     $this->assertFileExists("{$directory}/.{$ageInMinutes}MinutesOld.txt");
                 } else {
-                    $this->assertFileNotExists("{$directory}/{$ageInMinutes}MinutesOld.txt");
-                    $this->assertFileNotExists("{$directory}/.{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileDoesNotExist("{$directory}/{$ageInMinutes}MinutesOld.txt");
+                    $this->assertFileDoesNotExist("{$directory}/.{$ageInMinutes}MinutesOld.txt");
                 }
             }
         }
@@ -73,8 +73,8 @@ class DirectoryCleanupTest extends TestCase
                         $this->assertFileExists("{$path}/{$ageInMinutes}MinutesOld.txt");
                         $this->assertFileExists("{$path}/.{$ageInMinutes}MinutesOld.txt");
                     } else {
-                        $this->assertFileNotExists("{$path}/{$ageInMinutes}MinutesOld.txt");
-                        $this->assertFileNotExists("{$path}/.{$ageInMinutes}MinutesOld.txt");
+                        $this->assertFileDoesNotExist("{$path}/{$ageInMinutes}MinutesOld.txt");
+                        $this->assertFileDoesNotExist("{$path}/.{$ageInMinutes}MinutesOld.txt");
                     }
                 }
                 $path .= "{$level}/";
@@ -102,7 +102,7 @@ class DirectoryCleanupTest extends TestCase
 
         foreach ($directories as $directory => $config) {
             $this->assertFileExists("{$directory}/keepThisFile.txt");
-            $this->assertFileNotExists("{$directory}/removeThisFile.txt");
+            $this->assertFileDoesNotExist("{$directory}/removeThisFile.txt");
         }
     }
 
@@ -124,7 +124,7 @@ class DirectoryCleanupTest extends TestCase
 
         $this->artisan('clean:directories');
 
-        $this->assertFileNotExists("{$existingDirectory}/5MinutesOld.txt");
+        $this->assertFileDoesNotExist("{$existingDirectory}/5MinutesOld.txt");
     }
 
     /** @test */
@@ -152,9 +152,9 @@ class DirectoryCleanupTest extends TestCase
 
         foreach ($directories as $directory => $config) {
             $this->assertDirectoryExists("{$directory}/notEmptyDir");
-            $this->assertDirectoryNotExists("{$directory}/emptyDir");
+            $this->assertDirectoryDoesNotExist("{$directory}/emptyDir");
             $this->assertDirectoryExists("{$directory}/notEmptyDirWithHiddenFile");
-            $this->assertDirectoryNotExists("{$directory}/emptyDirWithHiddenFile");
+            $this->assertDirectoryDoesNotExist("{$directory}/emptyDirWithHiddenFile");
         }
     }
 
