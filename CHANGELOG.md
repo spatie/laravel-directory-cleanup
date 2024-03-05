@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-directory-cleanup` will be documented in this file
 
+## 1.10.0 - 2024-03-05
+
+### What's Changed
+
+* Laravel 11.x Compatibility by @laravel-shift in https://github.com/spatie/laravel-directory-cleanup/pull/48
+
+### New Contributors
+
+* @laravel-shift made their first contribution in https://github.com/spatie/laravel-directory-cleanup/pull/48
+
+**Full Changelog**: https://github.com/spatie/laravel-directory-cleanup/compare/1.9.1...1.10.0
+
 ## 1.9.1 - 2023-01-23
 
 - support Laravel 10
