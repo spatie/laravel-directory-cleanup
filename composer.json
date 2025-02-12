@@ -27,7 +27,7 @@
         "nesbot/carbon": "^2.63|^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5|^10.5",
+        "phpunit/phpunit": "^9.5|^10.5|^11.5",
         "mockery/mockery": "^1.4",
         "orchestra/testbench": "^8.0|^9.0|^10.0"
     },
