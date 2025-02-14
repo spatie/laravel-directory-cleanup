@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-directory-cleanup` will be documented in this file
 
+## 1.10.1 - 2025-02-14
+
+### What's Changed
+
+* Laravel 12 support by @poldixd in https://github.com/spatie/laravel-directory-cleanup/pull/49
+
+**Full Changelog**: https://github.com/spatie/laravel-directory-cleanup/compare/1.10.0...1.10.1
+
 ## 1.10.0 - 2024-03-05
 
 ### What's Changed
