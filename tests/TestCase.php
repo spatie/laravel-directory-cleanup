@@ -2,7 +2,7 @@
 
 namespace Spatie\DirectoryCleanup\Test;
 
-use File;
+use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Spatie\DirectoryCleanup\DirectoryCleanupServiceProvider;
 
