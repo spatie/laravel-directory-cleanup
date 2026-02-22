@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-directory-cleanup` will be documented in this file
 
+## 1.11.0 - 2026-02-22
+
+Add Laravel 13.x support
+
 ## 1.10.1 - 2025-02-14
 
 ### What's Changed
