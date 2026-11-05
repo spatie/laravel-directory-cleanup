@@ -6,8 +6,7 @@ use Carbon\Carbon;
 
 class DirectoryCleanupTest extends TestCase
 {
-    /** @test */
-    public function it_can_cleanup_the_directories_specified_in_the_config_file()
+    public function test_it_can_cleanup_the_directories_specified_in_the_config_file()
     {
         $numberOfDirectories = 5;
 
@@ -41,8 +40,7 @@ class DirectoryCleanupTest extends TestCase
         }
     }
 
-    /** @test */
-    public function it_can_cleanup_the_directories_specified_in_the_config_file_recursivly()
+    public function test_it_can_cleanup_the_directories_specified_in_the_config_file_recursivly()
     {
         $numberSubOfDirectories = 5;
 
@@ -82,8 +80,7 @@ class DirectoryCleanupTest extends TestCase
         }
     }
 
-    /** @test */
-    public function it_can_cleanup_the_directories_specified_in_the_config_file_but_keep_some_files()
+    public function test_it_can_cleanup_the_directories_specified_in_the_config_file_but_keep_some_files()
     {
         $directories[$this->getTempDirectory(1, true)] = [
             'deleteAllOlderThanMinutes' => 5,
@@ -106,8 +103,7 @@ class DirectoryCleanupTest extends TestCase
         }
     }
 
-    /** @test */
-    public function it_doesnt_fail_if_a_configured_dir_doesnt_exist()
+    public function test_it_doesnt_fail_if_a_configured_dir_doesnt_exist()
     {
         $directories[$this->getTempDirectory('nodir', false)] = [
             'deleteAllOlderThanMinutes' => 3,
@@ -127,8 +123,7 @@ class DirectoryCleanupTest extends TestCase
         $this->assertFileDoesNotExist("{$existingDirectory}/5MinutesOld.txt");
     }
 
-    /** @test */
-    public function it_can_delete_empty_subdirectories()
+    public function test_it_can_delete_empty_subdirectories()
     {
         $directories[$this->getTempDirectory('deleteEmptySubdirs', true)] = [
             'deleteAllOlderThanMinutes' => 3,
